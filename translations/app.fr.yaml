@@ -1,0 +1,15 @@
+# ENUM
+## STATUS
+enum.status.done: terminé
+enum.status.feedback: retour
+enum.status.need_review: besoin d'examen
+enum.status.pending: en attente
+enum.status.start: commencé
+enum.status.tested: testé
+enum.status.to_test: à tester
+enum.status.todo: en cours
+enum.status.under_testing: en cours de test
+
+## ROLE
+enum.role.admin: administrateur
+enum.role.user: utilisateur
