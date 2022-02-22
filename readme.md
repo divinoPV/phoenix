@@ -1,4 +1,4 @@
-#Phoenix
+# Phoenix
 The project that rose from the ashes, Phoenix was initially an online project management platform for the project managers of a French bank created by Gregoire Rondet.
 
 For my license project I had the task to make it rise from its ashes with the latest stacks (Symfony 6 and PHP 8.1).
