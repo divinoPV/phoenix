@@ -5,7 +5,7 @@ DOCKER_EXEC = docker exec -it
 DOCKER_EXEC_PHP = ${DOCKER_EXEC} ${CTNR_PHP}
 DOCKER_EXEC_PHP_BC = ${DOCKER_EXEC_PHP} ${PHP_BC}
 
-CTNR_PHP = php_phenix-container
+CTNR_PHP = php_phoenix-container
 
 PHP_BC = php bin/console
 
