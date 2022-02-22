@@ -20,13 +20,13 @@ abstract class Team
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?User $responsible;
 
-    #[ORM\OneToMany(mappedBy: 'team', targetEntity: User::class)]
-    private ?Collection $members;
+//    #[ORM\OneToMany(mappedBy: 'team', targetEntity: User::class)]
+//    private ?Collection $members;
 
-    #[Pure] public function __construct()
-    {
-        $this->members = new ArrayCollection();
-    }
+//    #[Pure] public function __construct()
+//    {
+//        $this->members = new ArrayCollection();
+//    }
 
     public function getName(): ?string
     {

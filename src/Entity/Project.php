@@ -51,13 +51,13 @@ final class Project implements TimestampableInterface, BlameableInterface
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?TeamCustomer $teamCustomer;
 
-    #[ORM\ManyToMany(targetEntity: Risk::class, inversedBy: 'projects')]
-    private ?Collection $risks;
+//    #[ORM\ManyToMany(targetEntity: Risk::class, inversedBy: 'projects')]
+//    private ?Collection $risks;
 
-    #[Pure] public function __construct()
-    {
-        $this->risks = new ArrayCollection();
-    }
+//    #[Pure] public function __construct()
+//    {
+//        $this->risks = new ArrayCollection();
+//    }
 
     public function getName(): ?string
     {

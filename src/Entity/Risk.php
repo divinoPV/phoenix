@@ -31,13 +31,13 @@ final class Risk
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?Severity $severity;
 
-    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'risks')]
-    private ?Collection $projects;
+//    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'risks')]
+//    private ?Collection $projects;
 
-    #[Pure] public function __construct()
-    {
-        $this->projects = new ArrayCollection();
-    }
+//    #[Pure] public function __construct()
+//    {
+//        $this->projects = new ArrayCollection();
+//    }
 
     public function getName(): ?string
     {
