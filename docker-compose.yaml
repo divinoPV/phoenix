@@ -1,0 +1,62 @@
+version: "3.2"
+
+networks:
+    phenix-network:
+        driver: bridge
+
+services:
+    nginx_phenix-service:
+        image: nginx:stable-alpine
+        container_name: nginx_phenix-container
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/app
+            - ./docker/dev/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php_phenix-service
+            - mysql_phenix-service
+        networks:
+            - "phenix-network"
+
+    php_phenix-service:
+        build:
+            context: ./docker/dev/php
+        container_name: php_phenix-container
+        links:
+            - mysql_phenix-service
+        ports:
+            - "9000:9001"
+        volumes:
+            - ./:/app
+        networks:
+            - "phenix-network"
+
+    mysql_phenix-service:
+        image: mysql:8.0
+        container_name: mysql_phenix-container
+        ports:
+            - "4306:3306"
+        volumes:
+            - ./docker/dev/mysql_data:/var/lib/mysqlmysql_data
+        command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: phenix
+        networks:
+            - "phenix-network"
+
+    phpmyadmin_phenix-service:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin_phenix-container
+        ports:
+            - "8080:80"
+        restart: always
+        environment:
+            PMA_HOST: mysql_phenix-service
+            PMA_USER: root
+            PMA_PASSWORD: root
+            PMA_PMADB: phpmyadmin
+        networks:
+            - "phenix-network"
