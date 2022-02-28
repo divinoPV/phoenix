@@ -29,9 +29,9 @@ up:
 kill:
 	docker kill $$(docker ps -q) || true
 
-.PHONY: sh
+.PHONY: bash
 # Run shell inside php-container
-sh:
+bash:
 	${DOCKER_EXEC_PHP} /bin/bash
 
 ##

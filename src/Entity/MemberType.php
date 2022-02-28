@@ -2,30 +2,30 @@
 
 namespace App\Entity;
 
-use App\Repository\ProbabilityRepository;
+use App\Repository\MemberTypeRepository;
 use App\Traits\Entity\UuidableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
-#[ORM\Entity(repositoryClass: ProbabilityRepository::class)]
-class Probability
+#[ORM\Entity(repositoryClass: MemberTypeRepository::class)]
+class MemberType
 {
     use UuidableTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $label;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 7)]
     private ?string $color;
 
-    #[ORM\OneToMany(mappedBy: 'probability', targetEntity: Risk::class)]
-    private ?Collection $risks;
+    #[ORM\OneToMany(mappedBy: 'type', targetEntity: Member::class)]
+    private ?Collection $members;
 
     #[Pure] public function __construct()
     {
-        $this->risks = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     public function getLabel(): ?string
@@ -52,26 +52,26 @@ class Probability
         return $this;
     }
 
-    public function getRisks(): Collection
+    public function getMembers(): Collection
     {
-        return $this->risks;
+        return $this->members;
     }
 
-    public function addRisk(Risk $risk): self
+    public function addMember(Member $member): self
     {
-        if (!$this->risks->contains($risk)) {
-            $this->risks[] = $risk;
-            $risk->setProbability($this);
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->setType($this);
         }
 
         return $this;
     }
 
-    public function removeRisk(Risk $risk): self
+    public function removeMember(Member $member): self
     {
-        if ($this->risks->removeElement($risk)) {
-            if ($risk->getProbability() === $this) {
-                $risk->setProbability(null);
+        if ($this->members->removeElement($member)) {
+            if ($member->getType() === $this) {
+                $member->setType(null);
             }
         }
 

@@ -8,15 +8,18 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: TeamProjectRepository::class)]
-final class TeamProject extends Team
+class TeamProject extends Team
 {
     #[ORM\OneToMany(mappedBy: 'teamProject', targetEntity: Project::class)]
     private ?Collection $projects;
 
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Member::class)]
+    private ?Collection $members;
+
     #[Pure] public function __construct()
     {
-        parent::__construct();
         $this->projects = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     public function getProjects(): Collection
@@ -39,6 +42,32 @@ final class TeamProject extends Team
         if ($this->projects->removeElement($project)) {
             if ($project->getTeamProject() === $this) {
                 $project->setTeamProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(Member $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(Member $member): self
+    {
+        if ($this->members->removeElement($member)) {
+            if ($member->getTeam() === $this) {
+                $member->setTeam(null);
             }
         }
 
