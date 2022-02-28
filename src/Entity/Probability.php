@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: ProbabilityRepository::class)]
-final class Probability
+class Probability
 {
     use UuidableTrait;
 
