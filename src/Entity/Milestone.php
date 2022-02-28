@@ -7,9 +7,10 @@ use App\Traits\Entity\UuidableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: MilestoneRepository::class)]
-final class Milestone
+class Milestone
 {
     use UuidableTrait;
 
@@ -17,15 +18,15 @@ final class Milestone
     private ?string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $value;
+    private ?string $placement;
 
     #[ORM\Column(type: 'boolean')]
     private bool $mandatory = false;
 
     #[ORM\OneToMany(mappedBy: 'milestone', targetEntity: Fact::class)]
-    private $facts;
+    private ?Collection $facts;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->facts = new ArrayCollection();
     }
@@ -42,14 +43,14 @@ final class Milestone
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getPlacement(): ?string
     {
-        return $this->value;
+        return $this->placement;
     }
 
-    public function setValue(string $value): self
+    public function setPlacement(string $placement): self
     {
-        $this->value = $value;
+        $this->placement = $placement;
 
         return $this;
     }
@@ -66,9 +67,6 @@ final class Milestone
         return $this;
     }
 
-    /**
-     * @return Collection|Fact[]
-     */
     public function getFacts(): Collection
     {
         return $this->facts;
@@ -87,7 +85,6 @@ final class Milestone
     public function removeFact(Fact $fact): self
     {
         if ($this->facts->removeElement($fact)) {
-            // set the owning side to null (unless already changed)
             if ($fact->getMilestone() === $this) {
                 $fact->setMilestone(null);
             }
