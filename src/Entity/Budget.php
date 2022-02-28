@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: BudgetRepository::class)]
-final class Budget
+class Budget
 {
     use UuidableTrait;
 
