@@ -10,16 +10,16 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: PortfolioRepository::class)]
-final class Portfolio
+class Portfolio
 {
     use UuidableTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'portfolios')]
+    #[ORM\ManyToOne(targetEntity: Responsible::class, inversedBy: 'portfolios')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?User $responsible;
+    private ?Responsible $responsible;
 
     #[ORM\OneToMany(mappedBy: 'portfolio', targetEntity: Project::class)]
     private ?Collection $projects;
@@ -41,12 +41,12 @@ final class Portfolio
         return $this;
     }
 
-    public function getResponsible(): ?User
+    public function getResponsible(): ?Responsible
     {
         return $this->responsible;
     }
 
-    public function setResponsible(?User $responsible): self
+    public function setResponsible(?Responsible $responsible): self
     {
         $this->responsible = $responsible;
 
