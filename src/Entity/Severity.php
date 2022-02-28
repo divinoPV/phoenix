@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: SeverityRepository::class)]
-final class Severity
+class Severity
 {
     use UuidableTrait;
 
