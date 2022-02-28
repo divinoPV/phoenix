@@ -12,7 +12,7 @@ trait UuidableTrait
     #[ORM\Column(type: 'string', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    private ?UuidInterface $uuid = null;
+    private UuidInterface|string|null $uuid = null;
 
     public function getUuid(): ?UuidInterface
     {
