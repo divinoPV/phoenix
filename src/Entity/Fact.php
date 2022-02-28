@@ -7,7 +7,7 @@ use App\Traits\Entity\UuidableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FactRepository::class)]
-final class Fact
+class Fact
 {
     use UuidableTrait;
 
@@ -23,6 +23,10 @@ final class Fact
     #[ORM\ManyToOne(targetEntity: Milestone::class, inversedBy: 'facts')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?Milestone $milestone;
+
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'facts')]
+    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
+    private ?Project $project;
 
     public function getOccurred(): ?\DateTimeImmutable
     {
@@ -68,6 +72,18 @@ final class Fact
     public function setMilestone(?Milestone $milestone): self
     {
         $this->milestone = $milestone;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
 
         return $this;
     }
