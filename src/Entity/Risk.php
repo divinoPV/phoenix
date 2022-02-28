@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: RiskRepository::class)]
-final class Risk
+class Risk
 {
     use UuidableTrait;
 
@@ -31,13 +31,13 @@ final class Risk
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?Severity $severity;
 
-//    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'risks')]
-//    private ?Collection $projects;
+    #[ORM\OneToMany(mappedBy: 'risk', targetEntity: ProjectRisk::class)]
+    private ?Collection $projectRisks;
 
-//    #[Pure] public function __construct()
-//    {
-//        $this->projects = new ArrayCollection();
-//    }
+    #[Pure] public function __construct()
+    {
+        $this->projectRisks = new ArrayCollection();
+    }
 
     public function getName(): ?string
     {
@@ -99,25 +99,27 @@ final class Risk
         return $this;
     }
 
-    public function getProjects(): Collection
+    public function getProjectRisks(): Collection
     {
-        return $this->projects;
+        return $this->projectRisks;
     }
 
-    public function addProject(Project $project): self
+    public function addProjectRisk(ProjectRisk $projectRisk): self
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->addRisk($this);
+        if (!$this->projectRisks->contains($projectRisk)) {
+            $this->projectRisks[] = $projectRisk;
+            $projectRisk->setRisk($this);
         }
 
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeProjectRisk(ProjectRisk $projectRisk): self
     {
-        if ($this->projects->removeElement($project)) {
-            $project->removeRisk($this);
+        if ($this->projectRisks->removeElement($projectRisk)) {
+            if ($projectRisk->getRisk() === $this) {
+                $projectRisk->setRisk(null);
+            }
         }
 
         return $this;
