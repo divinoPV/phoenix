@@ -2,22 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use App\Traits\Entity\UuidableTrait;
-use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
-use Knp\DoctrineBehaviors\Contract\{Entity\BlameableInterface, Entity\TimestampableInterface};
-use Knp\DoctrineBehaviors\Model\{Blameable\BlameableTrait, Timestampable\TimestampableTrait};
-use JetBrains\PhpStorm\Pure;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Component\Security\Core\User\{PasswordAuthenticatedUserInterface, UserInterface};
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-final class User implements UserInterface,
-                            PasswordAuthenticatedUserInterface,
-                            TimestampableInterface,
-                            BlameableInterface
+#[ORM\MappedSuperclass]
+abstract class User implements UserInterface,
+                               PasswordAuthenticatedUserInterface,
+                               TimestampableInterface
 {
-    use UuidableTrait, TimestampableTrait, BlameableTrait;
+    use UuidableTrait, TimestampableTrait;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email;
@@ -36,22 +32,6 @@ final class User implements UserInterface,
 
     #[ORM\Column(type: 'string')]
     private ?string $password;
-
-    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'members')]
-    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?Team $team;
-
-    #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Portfolio::class)]
-    private ?Collection $portfolios;
-
-    #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Team::class)]
-    private ?Collection $teams;
-
-    #[Pure] public function __construct()
-    {
-        $this->portfolios = new ArrayCollection();
-        $this->teams = new ArrayCollection();
-    }
 
     public function getEmail(): ?string
     {
@@ -152,69 +132,5 @@ final class User implements UserInterface,
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getTeam(): ?Team
-    {
-        return $this->team;
-    }
-
-    public function setTeam(?Team $team): self
-    {
-        $this->team = $team;
-
-        return $this;
-    }
-
-    public function getPortfolios(): Collection
-    {
-        return $this->portfolios;
-    }
-
-    public function addPortfolio(Portfolio $portfolio): self
-    {
-        if (!$this->portfolios->contains($portfolio)) {
-            $this->portfolios[] = $portfolio;
-            $portfolio->setResponsible($this);
-        }
-
-        return $this;
-    }
-
-    public function removePortfolio(Portfolio $portfolio): self
-    {
-        if ($this->portfolios->removeElement($portfolio)) {
-            if ($portfolio->getResponsible() === $this) {
-                $portfolio->setResponsible(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getTeams(): Collection
-    {
-        return $this->teams;
-    }
-
-    public function addTeam(Team $team): self
-    {
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-            $team->setResponsible($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTeam(Team $team): self
-    {
-        if ($this->teams->removeElement($team)) {
-            if ($team->getResponsible() === $this) {
-                $team->setResponsible(null);
-            }
-        }
-
-        return $this;
     }
 }
