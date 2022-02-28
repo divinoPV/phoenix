@@ -7,14 +7,14 @@ use App\Traits\Entity\UuidableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Knp\DoctrineBehaviors\Contract\Entity\{BlameableInterface, TimestampableInterface};
-use Knp\DoctrineBehaviors\Model\{Blameable\BlameableTrait, Timestampable\TimestampableTrait};
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-final class Project implements TimestampableInterface, BlameableInterface
+class Project implements TimestampableInterface
 {
-    use UuidableTrait, TimestampableTrait, BlameableTrait;
+    use UuidableTrait, TimestampableTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
@@ -51,13 +51,17 @@ final class Project implements TimestampableInterface, BlameableInterface
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?TeamCustomer $teamCustomer;
 
-//    #[ORM\ManyToMany(targetEntity: Risk::class, inversedBy: 'projects')]
-//    private ?Collection $risks;
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProjectRisk::class)]
+    private ?Collection $projectRisks;
 
-//    #[Pure] public function __construct()
-//    {
-//        $this->risks = new ArrayCollection();
-//    }
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Fact::class)]
+    private ?Collection $facts;
+
+    #[Pure] public function __construct()
+    {
+        $this->projectRisks = new ArrayCollection();
+        $this->facts = new ArrayCollection();
+    }
 
     public function getName(): ?string
     {
@@ -178,24 +182,54 @@ final class Project implements TimestampableInterface, BlameableInterface
 
         return $this;
     }
-
-    public function getRisks(): Collection
+    public function getProjectRisks(): Collection
     {
-        return $this->risks;
+        return $this->projectRisks;
     }
 
-    public function addRisk(Risk $risk): self
+    public function addProjectRisk(ProjectRisk $projectRisk): self
     {
-        if (!$this->risks->contains($risk)) {
-            $this->risks[] = $risk;
+        if (!$this->projectRisks->contains($projectRisk)) {
+            $this->projectRisks[] = $projectRisk;
+            $projectRisk->setProject($this);
         }
 
         return $this;
     }
 
-    public function removeRisk(Risk $risk): self
+    public function removeProjectRisk(ProjectRisk $projectRisk): self
     {
-        $this->risks->removeElement($risk);
+        if ($this->projectRisks->removeElement($projectRisk)) {
+            if ($projectRisk->getProject() === $this) {
+                $projectRisk->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFacts(): Collection
+    {
+        return $this->facts;
+    }
+
+    public function addFact(Fact $fact): self
+    {
+        if (!$this->facts->contains($fact)) {
+            $this->facts[] = $fact;
+            $fact->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFact(Fact $fact): self
+    {
+        if ($this->facts->removeElement($fact)) {
+            if ($fact->getProject() === $this) {
+                $fact->setProject(null);
+            }
+        }
 
         return $this;
     }
