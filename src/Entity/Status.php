@@ -7,11 +7,14 @@ use App\Traits\Entity\UuidableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
+use Knp\DoctrineBehaviors\Contract\Entity\SluggableInterface;
+use Knp\DoctrineBehaviors\Model\Sluggable\SluggableTrait;
 
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
-final class Status
+class Status implements SluggableInterface
 {
-    use UuidableTrait;
+    use UuidableTrait, SluggableTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $label;
@@ -19,19 +22,15 @@ final class Status
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $color;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $slug;
-
     #[ORM\Column(type: 'integer')]
     private ?int $placement;
 
     #[ORM\OneToMany(mappedBy: 'status', targetEntity: Project::class)]
     private ?Collection $projects;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->projects = new ArrayCollection();
-        $this->setSlug();
     }
 
     public function getLabel(): ?string
@@ -70,41 +69,9 @@ final class Status
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
-    }
-
-    private function setSlug(): self
-    {
-        $this->slug = strtolower(
-            trim(
-                preg_replace(
-                    '/[\s-]+/',
-                    '-',
-                    preg_replace(
-                        '/[^A-Za-z0-9-]+/',
-                        '-',
-                        preg_replace(
-                            '/[&]/',
-                            'and',
-                            preg_replace(
-                                '/[\']/',
-                                '',
-                                iconv(
-                                    'UTF-8',
-                                    'ASCII//TRANSLIT',
-                                    $this->label
-                                )
-                            )
-                        )
-                    )
-                ),
-                '-'
-            )
-        );;
-
-        return $this;
     }
 
     public function getProjects(): Collection
@@ -122,14 +89,13 @@ final class Status
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function getSluggableFields(): array
     {
-        if ($this->projects->removeElement($project)) {
-            if ($project->getStatus() === $this) {
-                $project->setStatus(null);
-            }
-        }
+        return ['label'];
+    }
 
-        return $this;
+    public function generateSlugValue($values): string
+    {
+        return \implode('-', $values);
     }
 }
