@@ -32,6 +32,19 @@ services:
         networks:
             - "phoenix-network"
 
+    #node
+    node-service:
+        image: node:latest
+        container_name: node_phoenix-container
+        entrypoint: [ "/bin/sh", "-c", "yarn install && yarn run dev && yarn run watch" ]
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./:/app
+        working_dir: /app
+        networks:
+            - "phoenix-network"
+
     mysql_phoenix-service:
         image: mysql:8.0
         container_name: mysql_phoenix-container
