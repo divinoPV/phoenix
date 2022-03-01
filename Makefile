@@ -1,17 +1,19 @@
 SHELL := /bin/bash
 
+CTNR_PHP = php_phoenix-container
+CTNR_NODE = node_phoenix-container
+
 COMPOSE = docker-compose
 DOCKER_EXEC = docker exec -it
 DOCKER_EXEC_PHP = ${DOCKER_EXEC} ${CTNR_PHP}
 DOCKER_EXEC_PHP_BC = ${DOCKER_EXEC_PHP} ${PHP_BC}
-
-CTNR_PHP = php_phoenix-container
+DOCKER_EXEC_NODE = ${DOCKER_EXEC} ${CTNR_NODE}
 
 PHP_BC = php bin/console
 
 .PHONY: start
 # start project
-start : up perm bundles db cc perm
+start : up perm bundles assets db cc perm
 
 ##
 ## Docker
@@ -135,3 +137,28 @@ cc:
 .PHONY: bundles
 # Display all commands in the project namespace
 bundles: cpr-i
+
+##
+## Assets
+##
+
+YARN = ${DOCKER_EXEC_NODE} yarn
+
+.PHONY: assets
+# Run assets
+assets: php-assets yarn-assets
+
+.PHONY: assets-watch
+# Run assets watch
+assets-watch: php-assets
+	${YARN} watch
+
+.PHONY: php-assets
+# Run php assets
+php-assets:
+	${DOCKER_EXEC_PHP_BC} assets:install
+
+.PHONY: yarn-assets
+# Run yarn assets
+yarn-assets:
+	${YARN} run encore dev
