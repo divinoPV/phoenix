@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\FactRepository;
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FactRepository::class)]
 class Fact
 {
-    use UuidableTrait;
+    use Uuidable;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $occurred;
@@ -33,7 +33,7 @@ class Fact
         return $this->occurred;
     }
 
-    public function setOccurred(\DateTimeImmutable $occurred): self
+    public function setOccurred(\DateTimeImmutable $occurred): static
     {
         $this->occurred = $occurred;
 
@@ -45,7 +45,7 @@ class Fact
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -57,7 +57,7 @@ class Fact
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
@@ -69,7 +69,7 @@ class Fact
         return $this->milestone;
     }
 
-    public function setMilestone(?Milestone $milestone): self
+    public function setMilestone(?Milestone $milestone): static
     {
         $this->milestone = $milestone;
 
@@ -81,7 +81,7 @@ class Fact
         return $this->project;
     }
 
-    public function setProject(?Project $project): self
+    public function setProject(?Project $project): static
     {
         $this->project = $project;
 

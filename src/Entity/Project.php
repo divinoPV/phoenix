@@ -3,18 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\BlameableInterface;
 use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Blameable\BlameableTrait;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-class Project implements TimestampableInterface
+class Project implements TimestampableInterface, BlameableInterface
 {
-    use UuidableTrait, TimestampableTrait;
+    use Uuidable, TimestampableTrait, BlameableTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
@@ -24,6 +26,9 @@ class Project implements TimestampableInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $code;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $archived = false;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $startedAt;
@@ -43,24 +48,20 @@ class Project implements TimestampableInterface
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?Budget $budget;
 
-    #[ORM\ManyToOne(targetEntity: TeamProject::class, inversedBy: 'projects')]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'projects')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?TeamProject $teamProject;
+    private ?Team $teamProject;
 
-    #[ORM\ManyToOne(targetEntity: TeamCustomer::class, inversedBy: 'projects')]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'projectsCustomer')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?TeamCustomer $teamCustomer;
+    private ?Team $teamCustomer;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProjectRisk::class)]
-    private ?Collection $projectRisks;
-
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Fact::class)]
-    private ?Collection $facts;
-
-    #[Pure] public function __construct()
-    {
-        $this->projectRisks = new ArrayCollection();
-        $this->facts = new ArrayCollection();
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProjectRisk::class)]
+        private ?Collection $projectRisks = new ArrayCollection,
+        #[ORM\OneToMany(mappedBy: 'project', targetEntity: Fact::class)]
+        private ?Collection $facts = new ArrayCollection
+    ) {
     }
 
     public function getName(): ?string
@@ -68,7 +69,7 @@ class Project implements TimestampableInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -80,7 +81,7 @@ class Project implements TimestampableInterface
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -92,9 +93,21 @@ class Project implements TimestampableInterface
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function setCode(string $code): static
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }
@@ -104,7 +117,7 @@ class Project implements TimestampableInterface
         return $this->startedAt;
     }
 
-    public function setStartedAt(?\DateTimeImmutable $startedAt): self
+    public function setStartedAt(?\DateTimeImmutable $startedAt): static
     {
         $this->startedAt = $startedAt;
 
@@ -116,7 +129,7 @@ class Project implements TimestampableInterface
         return $this->endedAt;
     }
 
-    public function setEndedAt(?\DateTimeImmutable $endedAt): self
+    public function setEndedAt(?\DateTimeImmutable $endedAt): static
     {
         $this->endedAt = $endedAt;
 
@@ -128,7 +141,7 @@ class Project implements TimestampableInterface
         return $this->status;
     }
 
-    public function setStatus(?Status $status): self
+    public function setStatus(?Status $status): static
     {
         $this->status = $status;
 
@@ -140,7 +153,7 @@ class Project implements TimestampableInterface
         return $this->portfolio;
     }
 
-    public function setPortfolio(?Portfolio $portfolio): self
+    public function setPortfolio(?Portfolio $portfolio): static
     {
         $this->portfolio = $portfolio;
 
@@ -152,31 +165,31 @@ class Project implements TimestampableInterface
         return $this->budget;
     }
 
-    public function setBudget(?Budget $budget): self
+    public function setBudget(?Budget $budget): static
     {
         $this->budget = $budget;
 
         return $this;
     }
 
-    public function getTeamProject(): ?TeamProject
+    public function getTeamProject(): ?Team
     {
         return $this->teamProject;
     }
 
-    public function setTeamProject(?TeamProject $teamProject): self
+    public function setTeamProject(?Team $teamProject): static
     {
         $this->teamProject = $teamProject;
 
         return $this;
     }
 
-    public function getTeamCustomer(): ?TeamCustomer
+    public function getTeamCustomer(): ?Team
     {
         return $this->teamCustomer;
     }
 
-    public function setTeamCustomer(?TeamCustomer $teamCustomer): self
+    public function setTeamCustomer(?Team $teamCustomer): static
     {
         $this->teamCustomer = $teamCustomer;
 
@@ -187,7 +200,7 @@ class Project implements TimestampableInterface
         return $this->projectRisks;
     }
 
-    public function addProjectRisk(ProjectRisk $projectRisk): self
+    public function addProjectRisk(ProjectRisk $projectRisk): static
     {
         if (!$this->projectRisks->contains($projectRisk)) {
             $this->projectRisks[] = $projectRisk;
@@ -197,7 +210,7 @@ class Project implements TimestampableInterface
         return $this;
     }
 
-    public function removeProjectRisk(ProjectRisk $projectRisk): self
+    public function removeProjectRisk(ProjectRisk $projectRisk): static
     {
         if ($this->projectRisks->removeElement($projectRisk)) {
             if ($projectRisk->getProject() === $this) {
@@ -213,7 +226,7 @@ class Project implements TimestampableInterface
         return $this->facts;
     }
 
-    public function addFact(Fact $fact): self
+    public function addFact(Fact $fact): static
     {
         if (!$this->facts->contains($fact)) {
             $this->facts[] = $fact;
@@ -223,7 +236,7 @@ class Project implements TimestampableInterface
         return $this;
     }
 
-    public function removeFact(Fact $fact): self
+    public function removeFact(Fact $fact): static
     {
         if ($this->facts->removeElement($fact)) {
             if ($fact->getProject() === $this) {

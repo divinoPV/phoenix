@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RiskRepository;
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: RiskRepository::class)]
 class Risk
 {
-    use UuidableTrait;
+    use Uuidable;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
@@ -31,12 +31,10 @@ class Risk
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?Severity $severity;
 
-    #[ORM\OneToMany(mappedBy: 'risk', targetEntity: ProjectRisk::class)]
-    private ?Collection $projectRisks;
-
-    #[Pure] public function __construct()
-    {
-        $this->projectRisks = new ArrayCollection();
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'risk', targetEntity: ProjectRisk::class)]
+        private ?Collection $projectRisks = new ArrayCollection
+    ) {
     }
 
     public function getName(): ?string
@@ -44,7 +42,7 @@ class Risk
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -56,7 +54,7 @@ class Risk
         return $this->identification;
     }
 
-    public function setIdentification(\DateTimeImmutable $identification): self
+    public function setIdentification(\DateTimeImmutable $identification): static
     {
         $this->identification = $identification;
 
@@ -68,7 +66,7 @@ class Risk
         return $this->resolution;
     }
 
-    public function setResolution(\DateTimeImmutable $resolution): self
+    public function setResolution(\DateTimeImmutable $resolution): static
     {
         $this->resolution = $resolution;
 
@@ -80,7 +78,7 @@ class Risk
         return $this->probability;
     }
 
-    public function setProbability(?Probability $probability): self
+    public function setProbability(?Probability $probability): static
     {
         $this->probability = $probability;
 
@@ -92,7 +90,7 @@ class Risk
         return $this->severity;
     }
 
-    public function setSeverity(?Severity $severity): self
+    public function setSeverity(?Severity $severity): static
     {
         $this->severity = $severity;
 
@@ -104,7 +102,7 @@ class Risk
         return $this->projectRisks;
     }
 
-    public function addProjectRisk(ProjectRisk $projectRisk): self
+    public function addProjectRisk(ProjectRisk $projectRisk): static
     {
         if (!$this->projectRisks->contains($projectRisk)) {
             $this->projectRisks[] = $projectRisk;
@@ -114,7 +112,7 @@ class Risk
         return $this;
     }
 
-    public function removeProjectRisk(ProjectRisk $projectRisk): self
+    public function removeProjectRisk(ProjectRisk $projectRisk): static
     {
         if ($this->projectRisks->removeElement($projectRisk)) {
             if ($projectRisk->getRisk() === $this) {

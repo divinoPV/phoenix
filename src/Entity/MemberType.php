@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MemberTypeRepository;
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: MemberTypeRepository::class)]
 class MemberType
 {
-    use UuidableTrait;
+    use Uuidable;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $label;
@@ -20,12 +20,10 @@ class MemberType
     #[ORM\Column(type: 'string', length: 7)]
     private ?string $color;
 
-    #[ORM\OneToMany(mappedBy: 'type', targetEntity: Member::class)]
-    private ?Collection $members;
-
-    #[Pure] public function __construct()
-    {
-        $this->members = new ArrayCollection();
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'type', targetEntity: Member::class)]
+        private ?Collection $members = new ArrayCollection
+    ) {
     }
 
     public function getLabel(): ?string
@@ -33,7 +31,7 @@ class MemberType
         return $this->label;
     }
 
-    public function setLabel(string $label): self
+    public function setLabel(string $label): static
     {
         $this->label = $label;
 
@@ -45,7 +43,7 @@ class MemberType
         return $this->color;
     }
 
-    public function setColor(string $color): self
+    public function setColor(string $color): static
     {
         $this->color = $color;
 
@@ -57,7 +55,7 @@ class MemberType
         return $this->members;
     }
 
-    public function addMember(Member $member): self
+    public function addMember(Member $member): static
     {
         if (!$this->members->contains($member)) {
             $this->members[] = $member;
@@ -67,7 +65,7 @@ class MemberType
         return $this;
     }
 
-    public function removeMember(Member $member): self
+    public function removeMember(Member $member): static
     {
         if ($this->members->removeElement($member)) {
             if ($member->getType() === $this) {

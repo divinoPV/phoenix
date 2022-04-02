@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SeverityRepository;
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: SeverityRepository::class)]
 class Severity
 {
-    use UuidableTrait;
+    use Uuidable;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $label;
@@ -20,12 +20,10 @@ class Severity
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $color;
 
-    #[ORM\OneToMany(mappedBy: 'severity', targetEntity: Risk::class)]
-    private ?Collection $risks;
-
-    #[Pure] public function __construct()
-    {
-        $this->risks = new ArrayCollection();
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'severity', targetEntity: Risk::class)]
+        private ?Collection $risks = new ArrayCollection
+    ) {
     }
 
     public function getLabel(): ?string
@@ -33,7 +31,7 @@ class Severity
         return $this->label;
     }
 
-    public function setLabel(string $label): self
+    public function setLabel(string $label): static
     {
         $this->label = $label;
 
@@ -45,7 +43,7 @@ class Severity
         return $this->color;
     }
 
-    public function setColor(string $color): self
+    public function setColor(string $color): static
     {
         $this->color = $color;
 
@@ -57,7 +55,7 @@ class Severity
         return $this->risks;
     }
 
-    public function addRisk(Risk $risk): self
+    public function addRisk(Risk $risk): static
     {
         if (!$this->risks->contains($risk)) {
             $this->risks[] = $risk;
@@ -67,7 +65,7 @@ class Severity
         return $this;
     }
 
-    public function removeRisk(Risk $risk): self
+    public function removeRisk(Risk $risk): static
     {
         if ($this->risks->removeElement($risk)) {
             if ($risk->getSeverity() === $this) {

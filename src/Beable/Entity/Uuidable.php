@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Traits\Entity;
+namespace App\Beable\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 
-trait UuidableTrait
+trait Uuidable
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]

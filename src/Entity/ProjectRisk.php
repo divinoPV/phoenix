@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use App\Repository\ProjectRiskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 #[ORM\Entity(repositoryClass: ProjectRiskRepository::class)]
-class ProjectRisk
+class ProjectRisk implements TimestampableInterface
 {
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'projectRisks')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
@@ -23,7 +27,7 @@ class ProjectRisk
         return $this->project;
     }
 
-    public function setProject(?Project $project): self
+    public function setProject(?Project $project): static
     {
         $this->project = $project;
 
@@ -35,7 +39,7 @@ class ProjectRisk
         return $this->risk;
     }
 
-    public function setRisk(?Risk $risk): self
+    public function setRisk(?Risk $risk): static
     {
         $this->risk = $risk;
 

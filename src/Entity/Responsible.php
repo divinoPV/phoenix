@@ -11,16 +11,12 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: ResponsibleRepository::class)]
 class Responsible extends User
 {
-    #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Portfolio::class)]
-    private ?Collection $portfolios;
-
-    #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Team::class)]
-    private ?Collection $teams;
-
-    #[Pure] public function __construct()
-    {
-        $this->portfolios = new ArrayCollection();
-        $this->teams = new ArrayCollection();
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Portfolio::class)]
+        private ?Collection $portfolios = new ArrayCollection,
+        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Team::class)]
+        private ?Collection $teams = new ArrayCollection
+    ) {
     }
 
     public function getPortfolios(): Collection
@@ -28,7 +24,7 @@ class Responsible extends User
         return $this->portfolios;
     }
 
-    public function addPortfolio(Portfolio $portfolio): self
+    public function addPortfolio(Portfolio $portfolio): static
     {
         if (!$this->portfolios->contains($portfolio)) {
             $this->portfolios[] = $portfolio;
@@ -38,7 +34,7 @@ class Responsible extends User
         return $this;
     }
 
-    public function removePortfolio(Portfolio $portfolio): self
+    public function removePortfolio(Portfolio $portfolio): static
     {
         if ($this->portfolios->removeElement($portfolio)) {
             if ($portfolio->getResponsible() === $this) {
@@ -54,7 +50,7 @@ class Responsible extends User
         return $this->teams;
     }
 
-    public function addTeam(Team $team): self
+    public function addTeam(Team $team): static
     {
         if (!$this->teams->contains($team)) {
             $this->teams[] = $team;
@@ -64,7 +60,7 @@ class Responsible extends User
         return $this;
     }
 
-    public function removeTeam(Team $team): self
+    public function removeTeam(Team $team): static
     {
         if ($this->teams->removeElement($team)) {
             if ($team->getResponsible() === $this) {

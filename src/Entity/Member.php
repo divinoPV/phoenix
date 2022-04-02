@@ -21,7 +21,7 @@ class Member extends User
         return $this->team;
     }
 
-    public function setTeam(?Team $team): self
+    public function setTeam(?Team $team): static
     {
         $this->team = $team;
 
@@ -33,7 +33,7 @@ class Member extends User
         return $this->type;
     }
 
-    public function setType(?MemberType $type): self
+    public function setType(?MemberType $type): static
     {
         $this->type = $type;
 
