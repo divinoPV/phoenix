@@ -14,7 +14,7 @@ final class Version20220402090616 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Table priming';
     }
 
     public function up(Schema $schema): void
