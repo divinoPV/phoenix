@@ -24,7 +24,7 @@ start : up perm bundles assets db cc perm
 up:
 	make kill
 	${COMPOSE} --env-file .env.local up -d --build
-	google-chrome http://127.0.0.1:80
+	google-chrome http://phoenix.co:80
 
 .PHONY: kill
 # kill all containers
