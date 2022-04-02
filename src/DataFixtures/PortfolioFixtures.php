@@ -15,8 +15,10 @@ final class PortfolioFixtures extends BaseFixture implements DependentFixtureInt
     protected function generate(ObjectManager $manager): void
     {
         $this->create(Portfolio::class, self::NUMBER_ELEMENT, function (Portfolio $portfolio) {
-            $portfolio->setName($this->faker->sentence())
-                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)));
+            $portfolio
+                ->setName($this->faker->sentence())
+                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
+            ;
         }, self::REFERENCE);
     }
 

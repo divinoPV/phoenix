@@ -15,7 +15,8 @@ final class SeverityFixtures extends BaseFixture
         $this->createFromArray(Severity::class, SeverityEnum::cases(), function (Severity $severity, string $value) {
             $severity
                 ->setLabel($value)
-                ->setColor($this->faker->hexColor());
+                ->setColor($this->faker->hexColor())
+            ;
         }, self::REFERENCE);
     }
 }

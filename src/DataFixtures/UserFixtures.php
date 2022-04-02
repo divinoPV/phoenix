@@ -15,7 +15,7 @@ final class UserFixtures extends BaseFixture implements DependentFixtureInterfac
 
     public const REFERENCE_MEMBER = 'member_';
 
-    public const NUMBER_ELEMENT = 124;
+    public const NUMBER_ELEMENT = 30;
 
     public const PASSWORD = 'xxx';
 
@@ -28,22 +28,24 @@ final class UserFixtures extends BaseFixture implements DependentFixtureInterfac
         $this->create(Responsible::class, self::NUMBER_ELEMENT, function (Responsible $responsible) {
             $responsible
                 ->setEmail($this->faker->email())
-                ->setName($this->faker->name())
-                ->setLastname($this->faker->lastName())
-                ->setUsername($this->faker->userName())
+                ->setFirstName($this->faker->name())
+                ->setLastName($this->faker->lastName())
+                ->setUserName($this->faker->userName())
                 ->setRoles([RoleUserEnum::cases()[rand(0, count(RoleUserEnum::cases()) - 1)]])
-                ->setPassword($this->passwordHasher->hashPassword($responsible, self::PASSWORD));
+                ->setPassword($this->passwordHasher->hashPassword($responsible, self::PASSWORD))
+            ;
         }, self::REFERENCE_RESPONSIBLE);
 
         $this->create(Member::class, self::NUMBER_ELEMENT, function (Member $member) {
             $member
                 ->setEmail($this->faker->email())
-                ->setName($this->faker->name())
-                ->setLastname($this->faker->lastName())
-                ->setUsername($this->faker->userName())
+                ->setFirstName($this->faker->name())
+                ->setLastName($this->faker->lastName())
+                ->setUserName($this->faker->userName())
                 ->setRoles([RoleUserEnum::cases()[rand(0, count(RoleUserEnum::cases()) - 1)]])
                 ->setPassword($this->passwordHasher->hashPassword($member, self::PASSWORD))
-                ->setType($this->getReference(MemberTypeFixtures::REFERENCE . rand(0, count(MemberTypeEnum::cases()) - 1)));
+                ->setType($this->getReference(MemberTypeFixtures::REFERENCE . rand(0, count(MemberTypeEnum::cases()) - 1)))
+            ;
         }, self::REFERENCE_MEMBER);
     }
 

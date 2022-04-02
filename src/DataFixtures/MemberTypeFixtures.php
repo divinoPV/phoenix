@@ -13,8 +13,10 @@ final class MemberTypeFixtures extends BaseFixture
     public function generate(ObjectManager $manager): void
     {
         $this->createFromArray(MemberType::class, MemberTypeEnum::cases(), function (MemberType $memberType, string $type) {
-            $memberType->setLabel($type)
-                ->setColor($this->faker->hexColor());
+            $memberType
+                ->setLabel($type)
+                ->setColor($this->faker->hexColor())
+            ;
         }, self::REFERENCE);
     }
 }

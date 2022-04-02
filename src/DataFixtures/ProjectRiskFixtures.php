@@ -15,7 +15,8 @@ final class ProjectRiskFixtures extends BaseFixture implements DependentFixtureI
         $this->create(ProjectRisk::class, self::NUMBER_ELEMENT, function (ProjectRisk $risk, int $i) {
             $risk
                 ->setProject($this->getReference(ProjectFixtures::REFERENCE . $i))
-                ->setRisk($this->getReference(RiskFixtures::REFERENCE . $i));
+                ->setRisk($this->getReference(RiskFixtures::REFERENCE . $i))
+            ;
 
         });
     }

@@ -15,7 +15,8 @@ final class ProbabilityFixtures extends BaseFixture
         $this->createFromArray(Probability::class, ProbabilityEnum::cases(), function (Probability $probability, string $value) {
             $probability
                 ->setLabel($value)
-                ->setColor($this->faker->hexColor());
+                ->setColor($this->faker->hexColor())
+            ;
         }, self::REFERENCE);
     }
 }

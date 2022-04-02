@@ -13,9 +13,11 @@ final class StatusFixtures extends BaseFixture
     public function generate(ObjectManager $manager): void
     {
         $this->createFromArray(Status::class, StatusEnum::cases(), function (Status $status, string $projectStatus, int $key) {
-            $status->setLabel($projectStatus)
+            $status
+                ->setLabel($projectStatus)
                 ->setColor($this->faker->hexColor())
-                ->setPlacement($key + 1);
+                ->setPlacement($key + 1)
+            ;
         }, self::REFERENCE);
     }
 }

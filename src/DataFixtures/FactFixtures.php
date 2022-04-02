@@ -21,7 +21,8 @@ final class FactFixtures extends BaseFixture implements DependentFixtureInterfac
                 ->setDescription(\implode(' ', $this->faker->sentences()))
                 ->setOccurred(new \DateTimeImmutable())
                 ->setProject($this->getReference(ProjectFixtures::REFERENCE . rand(1, ProjectFixtures::NUMBER_ELEMENT)))
-                ->setMilestone($this->getReference(MilestoneFixtures::REFERENCE . rand(0, count(MilestoneEnum::cases()) - 1)));
+                ->setMilestone($this->getReference(MilestoneFixtures::REFERENCE . rand(0, count(MilestoneEnum::cases()) - 1)))
+            ;
         }, self::REFERENCE);
     }
 

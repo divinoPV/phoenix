@@ -26,7 +26,8 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
                 ->setPortfolio($this->getReference(PortfolioFixtures::REFERENCE . rand(1, PortfolioFixtures::NUMBER_ELEMENT)))
                 ->setBudget($this->getReference(BudgetFixtures::REFERENCE . rand(1, BudgetFixtures::NUMBER_ELEMENT)))
                 ->setTeamCustomer($this->getReference(TeamFixtures::REFERENCE_CUSTOMER . rand(1, TeamFixtures::NUMBER_ELEMENT)))
-                ->setTeamProject($this->getReference(TeamFixtures::REFERENCE_PROJECT . rand(1, TeamFixtures::NUMBER_ELEMENT)));
+                ->setTeamProject($this->getReference(TeamFixtures::REFERENCE_PROJECT . rand(1, TeamFixtures::NUMBER_ELEMENT)))
+            ;
         }, self::REFERENCE);
     }
 

@@ -2,8 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\TeamCustomer;
-use App\Entity\TeamProject;
+use App\Entity\Team;
 use App\Enum\MemberTypeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -18,23 +17,26 @@ final class TeamFixtures extends BaseFixture implements DependentFixtureInterfac
 
     protected function generate(ObjectManager $manager): void
     {
-        $this->create(TeamCustomer::class, self::NUMBER_ELEMENT, function (TeamCustomer $team) {
-            $team->setName(\implode(' ', $this->faker->words()))
-                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)));
-        }, self::REFERENCE_CUSTOMER);
-
-        $this->create(TeamProject::class, self::NUMBER_ELEMENT, function (TeamProject $team) {
-            $team->setName(\implode(' ', $this->faker->words()))
-                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)));
+        $this->create(Team::class, self::NUMBER_ELEMENT, function (Team $team) {
+            $team
+                ->setName(\implode(' ', $this->faker->words()))
+                ->setType($this->getReference(TeamTypeFixtures::REFERENCE . '0'))
+                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
+            ;
         }, self::REFERENCE_PROJECT);
 
+        $this->create(Team::class, self::NUMBER_ELEMENT, function (Team $team) {
+            $team
+                ->setName(\implode(' ', $this->faker->words()))
+                ->setType($this->getReference(TeamTypeFixtures::REFERENCE . '1'))
+                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
+            ;
+        }, self::REFERENCE_CUSTOMER);
 
         foreach (range(1, UserFixtures::NUMBER_ELEMENT) as $i) {
             $member = $this->getReference(UserFixtures::REFERENCE_MEMBER . $i);
             $manager->persist($member->setTeam($this->getReference((
-                $member->getType() === MemberTypeEnum::Customer
-                    ? self::REFERENCE_CUSTOMER
-                    : self::REFERENCE_PROJECT
+                $member->getType() === MemberTypeEnum::Customer ? self::REFERENCE_CUSTOMER : self::REFERENCE_PROJECT
             ) . rand(1, self::NUMBER_ELEMENT))));
         }
         $manager->flush();
@@ -43,7 +45,8 @@ final class TeamFixtures extends BaseFixture implements DependentFixtureInterfac
     public function getDependencies(): array
     {
         return [
-            UserFixtures::class
+            UserFixtures::class,
+            TeamTypeFixtures::class
         ];
     }
 }

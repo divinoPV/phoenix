@@ -22,7 +22,8 @@ final class RiskFixtures extends BaseFixture implements DependentFixtureInterfac
                 ->setIdentification($identification = new \DateTimeImmutable())
                 ->setProbability($this->getReference(ProbabilityFixtures::REFERENCE . rand(0, count(ProbabilityEnum::cases()) - 1)))
                 ->setResolution((new \DateTimeImmutable())->setTimestamp(mt_rand($identification->getTimestamp(), $identification->add(\DateInterval::createFromDateString('5 months'))->getTimestamp())))
-                ->setSeverity($this->getReference(SeverityFixtures::REFERENCE . rand(0, count(SeverityEnum::cases()) - 1)));
+                ->setSeverity($this->getReference(SeverityFixtures::REFERENCE . rand(0, count(SeverityEnum::cases()) - 1)))
+            ;
         }, self::REFERENCE);
     }
 

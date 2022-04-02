@@ -16,7 +16,8 @@ final class MilestoneFixtures extends BaseFixture
            $milestone
                ->setName($value)
                ->setPlacement($key + 1)
-               ->setMandatory(\random_int(0, 1));
+               ->setMandatory(\random_int(0, 1))
+           ;
        }, self::REFERENCE);
     }
 }
