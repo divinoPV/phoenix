@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\StatusEnum;
 use App\Repository\ProjectRepository;
 use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,9 +37,8 @@ class Project implements TimestampableInterface, BlameableInterface
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $endedAt;
 
-    #[ORM\ManyToOne(targetEntity: Status::class, inversedBy: 'projects')]
-    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?Status $status;
+    #[ORM\Column(type:'string', enumType: StatusEnum::class)]
+    private ?StatusEnum $status;
 
     #[ORM\ManyToOne(targetEntity: Portfolio::class, inversedBy: 'projects')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
@@ -136,12 +136,12 @@ class Project implements TimestampableInterface, BlameableInterface
         return $this;
     }
 
-    public function getStatus(): ?Status
+    public function getStatus(): ?StatusEnum
     {
         return $this->status;
     }
 
-    public function setStatus(?Status $status): static
+    public function setStatus(?StatusEnum $status): static
     {
         $this->status = $status;
 

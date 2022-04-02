@@ -19,7 +19,7 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
             $project
                 ->setName(\implode(' ', $this->faker->words()))
                 ->setDescription(\implode(' ', $this->faker->sentences()))
-                ->setStatus($this->getReference(StatusFixtures::REFERENCE . rand(0, count(StatusEnum::cases()) - 1)))
+                ->setStatus(StatusEnum::random())
                 ->setStartedAt($startedAt = new \DateTimeImmutable())
                 ->setEndedAt((new \DateTimeImmutable())->setTimestamp(mt_rand($startedAt->getTimestamp(), $startedAt->add(\DateInterval::createFromDateString('9 months'))->getTimestamp())))
                 ->setCode($this->faker->word())
@@ -34,7 +34,6 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
     public function getDependencies(): array
     {
         return [
-            StatusFixtures::class,
             TeamFixtures::class,
             PortfolioFixtures::class,
             BudgetFixtures::class

@@ -20,8 +20,8 @@ final class FactFixtures extends BaseFixture implements DependentFixtureInterfac
                 ->setName(\implode(' ', $this->faker->words()))
                 ->setDescription(\implode(' ', $this->faker->sentences()))
                 ->setOccurred(new \DateTimeImmutable())
+                ->setMilestone(MilestoneEnum::random())
                 ->setProject($this->getReference(ProjectFixtures::REFERENCE . rand(1, ProjectFixtures::NUMBER_ELEMENT)))
-                ->setMilestone($this->getReference(MilestoneFixtures::REFERENCE . rand(0, count(MilestoneEnum::cases()) - 1)))
             ;
         }, self::REFERENCE);
     }
@@ -29,8 +29,7 @@ final class FactFixtures extends BaseFixture implements DependentFixtureInterfac
     public function getDependencies(): array
     {
         return [
-            ProjectFixtures::class,
-            MilestoneFixtures::class
+            ProjectFixtures::class
         ];
     }
 }

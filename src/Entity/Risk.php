@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Enum\ProbabilityEnum;
+use App\Enum\SeverityEnum;
 use App\Repository\RiskRepository;
 use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,13 +25,11 @@ class Risk
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $resolution;
 
-    #[ORM\ManyToOne(targetEntity: Probability::class, inversedBy: 'risks')]
-    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?Probability $probability;
+    #[ORM\Column(type:'string', enumType: ProbabilityEnum::class)]
+    private ?ProbabilityEnum $probability;
 
-    #[ORM\ManyToOne(targetEntity: Severity::class, inversedBy: 'risks')]
-    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?Severity $severity;
+    #[ORM\Column(type:'string', enumType: SeverityEnum::class)]
+    private ?SeverityEnum $severity;
 
     #[Pure] public function __construct(
         #[ORM\OneToMany(mappedBy: 'risk', targetEntity: ProjectRisk::class)]
@@ -73,24 +73,24 @@ class Risk
         return $this;
     }
 
-    public function getProbability(): ?Probability
+    public function getProbability(): ?ProbabilityEnum
     {
         return $this->probability;
     }
 
-    public function setProbability(?Probability $probability): static
+    public function setProbability(?ProbabilityEnum $probability): static
     {
         $this->probability = $probability;
 
         return $this;
     }
 
-    public function getSeverity(): ?Severity
+    public function getSeverity(): ?SeverityEnum
     {
         return $this->severity;
     }
 
-    public function setSeverity(?Severity $severity): static
+    public function setSeverity(?SeverityEnum $severity): static
     {
         $this->severity = $severity;
 

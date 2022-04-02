@@ -5,10 +5,9 @@ namespace App\DataFixtures;
 use App\Entity\Risk;
 use App\Enum\ProbabilityEnum;
 use App\Enum\SeverityEnum;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class RiskFixtures extends BaseFixture implements DependentFixtureInterface
+final class RiskFixtures extends BaseFixture
 {
     public const REFERENCE = 'risk_';
 
@@ -20,18 +19,10 @@ final class RiskFixtures extends BaseFixture implements DependentFixtureInterfac
             $risk
                 ->setName(\implode(' ', $this->faker->words()))
                 ->setIdentification($identification = new \DateTimeImmutable())
-                ->setProbability($this->getReference(ProbabilityFixtures::REFERENCE . rand(0, count(ProbabilityEnum::cases()) - 1)))
                 ->setResolution((new \DateTimeImmutable())->setTimestamp(mt_rand($identification->getTimestamp(), $identification->add(\DateInterval::createFromDateString('5 months'))->getTimestamp())))
-                ->setSeverity($this->getReference(SeverityFixtures::REFERENCE . rand(0, count(SeverityEnum::cases()) - 1)))
+                ->setProbability(ProbabilityEnum::random())
+                ->setSeverity(SeverityEnum::random())
             ;
         }, self::REFERENCE);
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            ProbabilityFixtures::class,
-            SeverityFixtures::class
-        ];
     }
 }

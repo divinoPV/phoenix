@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Team;
 use App\Enum\MemberTypeEnum;
+use App\Enum\TeamTypeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -20,7 +21,7 @@ final class TeamFixtures extends BaseFixture implements DependentFixtureInterfac
         $this->create(Team::class, self::NUMBER_ELEMENT, function (Team $team) {
             $team
                 ->setName(\implode(' ', $this->faker->words()))
-                ->setType($this->getReference(TeamTypeFixtures::REFERENCE . '0'))
+                ->setType(TeamTypeEnum::random())
                 ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
             ;
         }, self::REFERENCE_PROJECT);
@@ -28,7 +29,7 @@ final class TeamFixtures extends BaseFixture implements DependentFixtureInterfac
         $this->create(Team::class, self::NUMBER_ELEMENT, function (Team $team) {
             $team
                 ->setName(\implode(' ', $this->faker->words()))
-                ->setType($this->getReference(TeamTypeFixtures::REFERENCE . '1'))
+                ->setType(TeamTypeEnum::random())
                 ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
             ;
         }, self::REFERENCE_CUSTOMER);
@@ -45,8 +46,7 @@ final class TeamFixtures extends BaseFixture implements DependentFixtureInterfac
     public function getDependencies(): array
     {
         return [
-            UserFixtures::class,
-            TeamTypeFixtures::class
+            UserFixtures::class
         ];
     }
 }

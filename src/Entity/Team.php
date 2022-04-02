@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Beable\Entity\Uuidable;
+use App\Enum\TeamTypeEnum;
 use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
@@ -24,9 +25,8 @@ class Team
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: true)]
     private ?self $parent;
 
-    #[ORM\ManyToOne(targetEntity: TeamType::class, inversedBy: 'teams')]
-    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?TeamType $type;
+    #[ORM\Column(type:'string', enumType: TeamTypeEnum::class)]
+    private ?TeamTypeEnum $type;
 
     #[Pure] public function __construct(
         #[ORM\OneToMany(mappedBy: 'teamProject', targetEntity: Project::class)]
@@ -181,12 +181,12 @@ class Team
         return $this;
     }
 
-    public function getType(): ?TeamType
+    public function getType(): ?TeamTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(?TeamType $type): static
+    public function setType(?TeamTypeEnum $type): static
     {
         $this->type = $type;
 

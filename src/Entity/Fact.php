@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\MilestoneEnum;
 use App\Repository\FactRepository;
 use App\Beable\Entity\Uuidable;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,9 +21,8 @@ class Fact
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $description;
 
-    #[ORM\ManyToOne(targetEntity: Milestone::class, inversedBy: 'facts')]
-    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?Milestone $milestone;
+    #[ORM\Column(type:'string', enumType: MilestoneEnum::class)]
+    private ?MilestoneEnum $milestone;
 
     #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'facts')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
@@ -64,12 +64,12 @@ class Fact
         return $this;
     }
 
-    public function getMilestone(): ?Milestone
+    public function getMilestone(): ?MilestoneEnum
     {
         return $this->milestone;
     }
 
-    public function setMilestone(?Milestone $milestone): static
+    public function setMilestone(?MilestoneEnum $milestone): static
     {
         $this->milestone = $milestone;
 

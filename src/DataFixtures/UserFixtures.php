@@ -3,17 +3,18 @@
 namespace App\DataFixtures;
 
 use App\Enum\MemberTypeEnum;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use App\Entity\{Member, Responsible};
-use App\Enum\RoleUserEnum;
+use App\Entity\{Admin, Member, Responsible};
+use App\Enum\UserRoleEnum;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final class UserFixtures extends BaseFixture implements DependentFixtureInterface
+final class UserFixtures extends BaseFixture
 {
     public const REFERENCE_RESPONSIBLE = 'responsible_';
 
     public const REFERENCE_MEMBER = 'member_';
+
+    public const REFERENCE_ADMIN = 'admin_';
 
     public const NUMBER_ELEMENT = 30;
 
@@ -31,8 +32,8 @@ final class UserFixtures extends BaseFixture implements DependentFixtureInterfac
                 ->setFirstName($this->faker->name())
                 ->setLastName($this->faker->lastName())
                 ->setUserName($this->faker->userName())
-                ->setRoles([RoleUserEnum::cases()[rand(0, count(RoleUserEnum::cases()) - 1)]])
                 ->setPassword($this->passwordHasher->hashPassword($responsible, self::PASSWORD))
+                ->setRoles([UserRoleEnum::User])
             ;
         }, self::REFERENCE_RESPONSIBLE);
 
@@ -42,17 +43,21 @@ final class UserFixtures extends BaseFixture implements DependentFixtureInterfac
                 ->setFirstName($this->faker->name())
                 ->setLastName($this->faker->lastName())
                 ->setUserName($this->faker->userName())
-                ->setRoles([RoleUserEnum::cases()[rand(0, count(RoleUserEnum::cases()) - 1)]])
                 ->setPassword($this->passwordHasher->hashPassword($member, self::PASSWORD))
-                ->setType($this->getReference(MemberTypeFixtures::REFERENCE . rand(0, count(MemberTypeEnum::cases()) - 1)))
+                ->setRoles([UserRoleEnum::User])
+                ->setType(MemberTypeEnum::random())
             ;
         }, self::REFERENCE_MEMBER);
-    }
 
-    public function getDependencies(): array
-    {
-        return [
-            MemberTypeFixtures::class
-        ];
+        $this->create(Admin::class, self::NUMBER_ELEMENT, function (Admin $admin) {
+            $admin
+                ->setEmail($this->faker->email())
+                ->setFirstName($this->faker->name())
+                ->setLastName($this->faker->lastName())
+                ->setUserName($this->faker->userName())
+                ->setPassword($this->passwordHasher->hashPassword($admin, self::PASSWORD))
+                ->setRoles([UserRoleEnum::Admin])
+            ;
+        }, self::REFERENCE_ADMIN);
     }
 }
