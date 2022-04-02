@@ -1,0 +1,16 @@
+<div>
+    <div>
+        {% if path_add is defined %}
+            {% include 'app/common/button/_add.html.twig' with {
+                path_add: path_add,
+                label_add: label_add|default('common.new'|trans)
+            } only %}
+        {% endif %}
+        {% if path_export is defined %}
+            {% include 'app/common/button/_export.html.twig' with {
+                path_export: path_export,
+                label_export: label_export|default('common.export.global')
+            } only %}
+        {% endif %}
+    </div>
+</div>

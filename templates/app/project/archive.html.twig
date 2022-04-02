@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projets{% endblock %}
+
+{% block body %}
+    <h1>Projets</h1>
+    {% include 'app/common/_archive_leading.html.twig' with {
+        path_add: path('project_add'),
+        label_add: 'Ajouter un projet',
+        path_export: path('projects_export'),
+        label_export: 'Exporter les projets',
+    } only %}
+{#    {% for project in projects %}#}
+{#        <div>#}
+{#            <span>{{ project.name }}</span>#}
+{#            <p>{{ project.description }}</p>#}
+{#        </div>#}
+{#    {% endfor %}#}
+{% endblock %}
