@@ -112,7 +112,7 @@ db-dm:
 .PHONY: db-dme
 # Doctrine migrations execute
 db-dme:
-	${DOCTRINE}m:e
+	${DOCTRINE}m:e $(c) -n
 
 .PHONY: db-dmv
 # Doctrine migrations version

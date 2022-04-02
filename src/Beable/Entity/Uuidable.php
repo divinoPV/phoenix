@@ -14,7 +14,7 @@ trait Uuidable
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private UuidInterface|string|null $uuid = null;
 
-    public function getUuid(): ?UuidInterface
+    public function getUuid(): ?string
     {
         return $this->uuid;
     }

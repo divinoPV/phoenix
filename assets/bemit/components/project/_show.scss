@@ -1,0 +1,42 @@
+.c-projectShow {
+  &__calendar {
+    height: 1200px;
+  }
+
+  &__content {
+    margin-bottom: 34px;
+
+    &__budget, &__portfolio, &__teamProject, &__teamCustomer {
+      margin-bottom: 21px;
+
+      span {
+        display: block;
+      }
+
+      &__values {
+        display: flex;
+        flex-direction: column;
+        margin-left: 34px;
+      }
+    }
+  }
+
+  &__leading {
+    display: flex;
+    flex-direction: column;
+
+    &__date {
+      margin-bottom: 13px;
+    }
+
+    &__description {
+      margin-bottom: 21px;
+
+      &__value {
+        margin-left: 34px;
+        text-align: justify;
+        text-align-last: start;
+      }
+    }
+  }
+}

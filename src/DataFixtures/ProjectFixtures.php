@@ -20,13 +20,14 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
                 ->setName(\implode(' ', $this->faker->words()))
                 ->setDescription(\implode(' ', $this->faker->sentences()))
                 ->setStatus(StatusEnum::random())
-                ->setStartedAt($startedAt = new \DateTimeImmutable())
-                ->setEndedAt((new \DateTimeImmutable())->setTimestamp(mt_rand($startedAt->getTimestamp(), $startedAt->add(\DateInterval::createFromDateString('9 months'))->getTimestamp())))
+                ->setStartedAt($startedAt = new \DateTimeImmutable)
+                ->setEndedAt((new \DateTimeImmutable)->setTimestamp(mt_rand($startedAt->getTimestamp(), $startedAt->add(\DateInterval::createFromDateString('9 months'))->getTimestamp())))
                 ->setCode($this->faker->word())
                 ->setPortfolio($this->getReference(PortfolioFixtures::REFERENCE . rand(1, PortfolioFixtures::NUMBER_ELEMENT)))
                 ->setBudget($this->getReference(BudgetFixtures::REFERENCE . rand(1, BudgetFixtures::NUMBER_ELEMENT)))
                 ->setTeamCustomer($this->getReference(TeamFixtures::REFERENCE_CUSTOMER . rand(1, TeamFixtures::NUMBER_ELEMENT)))
                 ->setTeamProject($this->getReference(TeamFixtures::REFERENCE_PROJECT . rand(1, TeamFixtures::NUMBER_ELEMENT)))
+                ->setCreatedBy($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
             ;
         }, self::REFERENCE);
     }
@@ -36,7 +37,8 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
         return [
             TeamFixtures::class,
             PortfolioFixtures::class,
-            BudgetFixtures::class
+            BudgetFixtures::class,
+            UserFixtures::class
         ];
     }
 }

@@ -1,0 +1,37 @@
+.o-header {
+  align-items: center;
+  background-color: $blue-sapphire;
+  display: flex;
+  padding: 21px 89px;
+
+  * {
+    color: $white;
+  }
+
+  nav {
+    align-items: center;
+    display: flex;
+    gap: 21px;
+
+    a {
+      align-items: center;
+      display: flex;
+      font-weight: 500;
+      gap: 5px;
+      text-decoration: none;
+
+      svg {
+        fill: $white;
+      }
+    }
+  }
+
+  &__logo {
+    margin-right: 13px;
+  }
+
+  &__title {
+    font-size: 2rem;
+    margin-right: 5%;
+  }
+}

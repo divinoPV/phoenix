@@ -31,11 +31,9 @@ class Risk
     #[ORM\Column(type:'string', enumType: SeverityEnum::class)]
     private ?SeverityEnum $severity;
 
-    #[Pure] public function __construct(
-        #[ORM\OneToMany(mappedBy: 'risk', targetEntity: ProjectRisk::class)]
-        private ?Collection $projectRisks = new ArrayCollection
-    ) {
-    }
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'risks')]
+    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
+    private ?Project $project;
 
     public function getName(): ?string
     {
@@ -97,28 +95,14 @@ class Risk
         return $this;
     }
 
-    public function getProjectRisks(): Collection
+    public function getProject(): ?Project
     {
-        return $this->projectRisks;
+        return $this->project;
     }
 
-    public function addProjectRisk(ProjectRisk $projectRisk): static
+    public function setProject(?Project $project): static
     {
-        if (!$this->projectRisks->contains($projectRisk)) {
-            $this->projectRisks[] = $projectRisk;
-            $projectRisk->setRisk($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProjectRisk(ProjectRisk $projectRisk): static
-    {
-        if ($this->projectRisks->removeElement($projectRisk)) {
-            if ($projectRisk->getRisk() === $this) {
-                $projectRisk->setRisk(null);
-            }
-        }
+        $this->project = $project;
 
         return $this;
     }

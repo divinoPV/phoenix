@@ -8,6 +8,6 @@ enum MemberTypeEnum: string
 {
     use Trumpable;
 
-    case ProjectChief = 'member_type.project_chief';
+    case Project = 'member_type.project';
     case Customer = 'member_type.customer';
 }

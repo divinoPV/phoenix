@@ -13,4 +13,9 @@ trait Trumpable
     {
         return 'enum.'.$this->value.'.label';
     }
+
+    public function slug(): string
+    {
+        return str_replace(['.', '_'], ['-', '-'], $this->value);
+    }
 }

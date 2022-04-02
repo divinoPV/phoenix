@@ -1,5 +1,6 @@
-<div>
-    <div>
+{% set archiveLeading = 'o-archiveLeading' %}
+<div class="{{ archiveLeading }}">
+    <div class="{{ archiveLeading }}__btn">
         {% if path_add is defined %}
             {% include 'app/common/button/_add.html.twig' with {
                 path_add: path_add,

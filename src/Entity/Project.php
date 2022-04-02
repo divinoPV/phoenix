@@ -57,8 +57,8 @@ class Project implements TimestampableInterface, BlameableInterface
     private ?Team $teamCustomer;
 
     #[Pure] public function __construct(
-        #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProjectRisk::class)]
-        private ?Collection $projectRisks = new ArrayCollection,
+        #[ORM\OneToMany(mappedBy: 'project', targetEntity: Risk::class)]
+        private ?Collection $risks = new ArrayCollection,
         #[ORM\OneToMany(mappedBy: 'project', targetEntity: Fact::class)]
         private ?Collection $facts = new ArrayCollection
     ) {
@@ -100,7 +100,12 @@ class Project implements TimestampableInterface, BlameableInterface
         return $this;
     }
 
-    public function getArchived(): bool
+    public function getArchived(): string
+    {
+        return $this->archived ? 'Oui' : 'Non';
+    }
+
+    public function hasArchived(): bool
     {
         return $this->archived;
     }
@@ -195,26 +200,26 @@ class Project implements TimestampableInterface, BlameableInterface
 
         return $this;
     }
-    public function getProjectRisks(): Collection
+    public function getRisks(): Collection
     {
-        return $this->projectRisks;
+        return $this->risks;
     }
 
-    public function addProjectRisk(ProjectRisk $projectRisk): static
+    public function addRisk(Risk $risk): static
     {
-        if (!$this->projectRisks->contains($projectRisk)) {
-            $this->projectRisks[] = $projectRisk;
-            $projectRisk->setProject($this);
+        if (!$this->risks->contains($risk)) {
+            $this->risks[] = $risk;
+            $risk->setProject($this);
         }
 
         return $this;
     }
 
-    public function removeProjectRisk(ProjectRisk $projectRisk): static
+    public function removeRisk(Risk $risk): static
     {
-        if ($this->projectRisks->removeElement($projectRisk)) {
-            if ($projectRisk->getProject() === $this) {
-                $projectRisk->setProject(null);
+        if ($this->risks->removeElement($risk)) {
+            if ($risk->getProject() === $this) {
+                $risk->setProject(null);
             }
         }
 

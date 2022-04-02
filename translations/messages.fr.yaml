@@ -1,0 +1,166 @@
+# Common
+common.title: Phoenix
+common.logo: Logo du site
+common.new: Nouveau
+common.export: Exporter
+common.export.globale: Export global
+
+# Nav
+nav.dashboard: Tableau de bord
+nav.projects: Projets
+nav.admin: Administration
+
+# Views
+## View - Project
+project.title: Projets
+project.no_project: Aucun projet
+
+### View - Project - List
+project.list.code: Code
+project.list.name: Nom
+project.list.teamProject.responsible.full_name: CP
+project.list.teamProject.name: Équipe projet
+project.list.teamCustomer.responsible.full_name: CP client
+project.list.teamCustomer.name: Client
+project.list.status: Statut
+project.list.original: Initial
+project.list.consumed: Consommé
+project.list.remaining: Reste à faire
+project.list.landing: Atterissage
+project.list.startedAt: Commencé
+project.list.endedAt: Terminé
+project.list.archived: Archivé
+project.list.updatedAt: Mis à jour
+
+### View - Project - Show
+project.show.code: 'Code :'
+project.show.status: 'Statut :'
+project.show.archived.true: Archivé
+project.show.archived.false: Actif
+project.show.startedAt: À commencé le
+project.show.endedAt: et fini le
+project.show.description: 'Description :'
+project.show.budget: 'Budget :'
+project.show.original: 'Initial :'
+project.show.consumed: 'Consommé :'
+project.show.remaining: 'Reste à faire :'
+project.show.landing: 'Atterrissage :'
+project.show.portfolio: 'Portefeuille :'
+project.show.portfolio.name: 'Nom :'
+project.show.portfolio.responsible.full_name: 'Responsable :'
+project.show.teamProject: 'Équipe projet :'
+project.show.teamProject.name: 'Nom :'
+project.show.teamProject.responsible.full_name: 'CP :'
+project.show.teamCustomer: 'Client :'
+project.show.teamCustomer.name: 'Nom :'
+project.show.teamCustomer.responsible.full_name: 'CP client :'
+project.show.risk.identification: Identifier le
+project.show.risk.resolution: Résolue le
+project.show.probability: 'Probabilité :'
+project.show.severity: 'Sévérité :'
+project.show.createdAt: Créé le
+project.show.updatedAt: Mis à jour le
+project.show.createdBy: par
+project.show.updatedBy: par
+
+# Enums
+## Enum - Status
+enum.status:
+    done:
+        label: Terminé
+    feedback:
+        label: Retour
+    need_review:
+        label: Besoin d'examen
+    pending:
+        label: En attente
+    start:
+        label: Commencé
+    tested:
+        label: Testé
+    to_test:
+        label: À tester
+    todo:
+        label: En cours
+    under_testing:
+        label: En cours de test
+
+## Enum - Role
+enum.role:
+    admin:
+        label: Administrateur
+    user:
+        label: Utilisateur
+
+## Enum - Milestone
+enum.milestone:
+    conception_start:
+        label: Début de la conception
+    conception_end:
+        label: Fin de la conception
+    development_start:
+        label: Début du développement
+    development_end:
+        label: Fin du développement
+    preproduction_delivery:
+        label: Livraison en préproduction
+    production_delivery:
+        label: Début de la recette
+    recipe_start:
+        label: Fin de la recette
+    recipe_end:
+        label: Livraison en production
+
+## Enum - Severity
+enum.severity:
+    blocker:
+        label: Bloquer
+    critical:
+        label: Critique
+    high:
+        label: Haut
+    info:
+        label: Information
+    low:
+        label: Bas
+    major:
+        label: Majeur
+    medium:
+        label: Moyen
+    minor:
+        label: Mineur
+
+## Enum - Probability
+enum.probability:
+    above_mid:
+        label: Au dessus de la moyenne
+    always:
+        label: Toujours
+    below_mid:
+        label: En dessus de la moyenne
+    high:
+        label: Élevé
+    low:
+        label: Faible
+    mid:
+        label: Moyen
+    never:
+        label: Jamais
+    very_high:
+        label: Très élevé
+    very_low:
+        label: Très faible
+
+## Enum - Member type
+enum.member_type:
+    project_chief:
+        label: Chef de projet
+    customer:
+        label: Client
+
+## Enum - Team type
+enum.team_type:
+    project:
+        label: Projet
+    customer:
+        label: Client
