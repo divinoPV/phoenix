@@ -2,14 +2,18 @@
 
 namespace App\Enum;
 
+use App\Beable\Enum\Trumpable;
+
 enum MilestoneEnum: string
 {
-    case ConceptionStart = 'enum.milestone.conception_start';
-    case ConceptionEnd = 'enum.milestone.conception_end';
-    case DevelopmentStart = 'enum.milestone.development_start';
-    case DevelopmentEnd = 'enum.milestone.development_end';
-    case PreproductionDelivery = 'enum.milestone.preproduction_delivery';
-    case ProductionDelivery = 'enum.milestone.production_delivery';
-    case RecipeStart = 'enum.milestone.recipe_start';
-    case RecipeEnd = 'enum.milestone.recipe_end';
+    use Trumpable;
+
+    case ConceptionStart = 'milestone.conception_start';
+    case ConceptionEnd = 'milestone.conception_end';
+    case DevelopmentStart = 'milestone.development_start';
+    case DevelopmentEnd = 'milestone.development_end';
+    case PreproductionDelivery = 'milestone.preproduction_delivery';
+    case ProductionDelivery = 'milestone.production_delivery';
+    case RecipeStart = 'milestone.recipe_start';
+    case RecipeEnd = 'milestone.recipe_end';
 }

@@ -2,8 +2,12 @@
 
 namespace App\Enum;
 
+use App\Beable\Enum\Trumpable;
+
 enum RoleUserEnum: string
 {
-    case RoleAdmin = 'enum.role.admin';
-    case RoleUser = 'enum.role.user';
+    use Trumpable;
+
+    case RoleAdmin = 'role.admin';
+    case RoleUser = 'role.user';
 }

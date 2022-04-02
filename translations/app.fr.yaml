@@ -2,103 +2,100 @@
 ## Enum - Status
 enum.status:
     done:
-        default: Terminé
+        label: Terminé
     feedback:
-        default: Retour
+        label: Retour
     need_review:
-        default: Besoin d'examen
+        label: Besoin d'examen
     pending:
-        default: En attente
+        label: En attente
     start:
-        default: Commencé
+        label: Commencé
     tested:
-        default: Testé
+        label: Testé
     to_test:
-        default: À tester
+        label: À tester
     todo:
-        default: En cours
+        label: En cours
     under_testing:
-        default: En cours de test
+        label: En cours de test
 
 ## Enum - Role
 enum.role:
     admin:
-        default: Administrateur
+        label: Administrateur
     user:
-        default: Utilisateur
+        label: Utilisateur
 
 ## Enum - Milestone
 enum.milestone:
     conception_start:
-        default: Début de la conception
+        label: Début de la conception
     conception_end:
-        default: Fin de la conception
+        label: Fin de la conception
     development_start:
-        default: Début du développement
+        label: Début du développement
     development_end:
-        default: Fin du développement
+        label: Fin du développement
     preproduction_delivery:
-        default: Livraison en préproduction
+        label: Livraison en préproduction
     production_delivery:
-        default: Début de la recette
+        label: Début de la recette
     recipe_start:
-        default: Fin de la recette
+        label: Fin de la recette
     recipe_end:
-        default: Livraison en production
+        label: Livraison en production
 
 ## Enum - Severity
 enum.severity:
     blocker:
-        default: Bloquer
-        description: x
+        label: Bloquer
     critical:
-        default: Critique
-        description: x
+        label: Critique
     high:
-        default: Haut
-        description: x
+        label: Haut
     info:
-        default: Information
-        description: x
+        label: Information
     low:
-        default: Bas
-        description: x
+        label: Bas
     major:
-        default: Majeur
-        description: x
+        label: Majeur
     medium:
-        default: Moyen
-        description: x
+        label: Moyen
     minor:
-        default: Mineur
-        description: x
+        label: Mineur
 
 ## Enum - Probability
 enum.propability:
     above_mid :
-        default: Au dessus de la moyenne
-        description: x
+        label: Au dessus de la moyenne
     always :
-        default: Toujours
-        description: x
+        label: Toujours
     below_mid :
-        default: En dessus de la moyenne
-        description: x
+        label: En dessus de la moyenne
     high :
-        default: Élevé
-        description: x
+        label: Élevé
     low :
-        default: Faible
-        description: x
+        label: Faible
     mid :
-        default: Moyen
-        description: x
+        label: Moyen
     never :
-        default: Jamais
-        description: x
+        label: Jamais
     very_high :
-        default: Très élevé
-        description: x
+        label: Très élevé
     very_low :
-        default: Très faible
-        description: x
+        label: Très faible
+
+## Enum - Member type
+enum.member_type:
+    project_chief:
+        label: Chef de projet
+    customer:
+        label: Client
+
+## Enum - Team type
+enum.team_type:
+    project:
+        label: Projet
+    customer:
+        label: Client
