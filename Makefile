@@ -68,12 +68,17 @@ DOCTRINE_CACHE_CLEAR = ${DOCTRINE_CACHE}clear-
 
 .PHONY: build
 # Drop, create db, update schema and load fixtures
-db: db-cache db-d db-c db-su db-fl
+db: db-cache db-generate db-fl
+
+.PHONY: db-generate
+# Drop database
+db-generate: db-d db-c db-su
 
 .PHONY: db-d
 # Drop database
 db-d:
 	${DOCTRINE_DB}d --if-exists -f
+
 .PHONY: db-c
 # Create database
 db-c:
@@ -97,7 +102,27 @@ db-fl:
 .PHONY: db-m
 # Make migrations
 db-m:
-	${DOCTRINE}migration:migrate
+	${DOCKER_EXEC_PHP_BC} m:m -n
+
+.PHONY: db-dm
+# Doctrine make migrations
+db-dm:
+	${DOCTRINE}m:m -n
+
+.PHONY: db-dme
+# Doctrine migrations execute
+db-dme:
+	${DOCTRINE}m:e
+
+.PHONY: db-dmv
+# Doctrine migrations version
+db-dmv:
+	${DOCTRINE}m:v
+
+.PHONY: db-dmd
+# Doctrine migrations diff
+db-dmd:
+	${DOCTRINE}m:diff
 
 .PHONY: db-cache
 # Clear doctrine cache
