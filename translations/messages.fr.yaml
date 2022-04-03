@@ -5,6 +5,7 @@ common.new: Nouveau
 common.edit: Modifier
 common.delete: Supprimer
 common.back: Retour
+common.welcome: Bienvenue
 
 # Flashes
 flash.form.valid: Le formulaire est valide
@@ -95,6 +96,9 @@ project.edit.title: Modifier le projet
 ## Entity - User
 user.email: Email
 user.password: Mot de passe
+user.first_name: Prénom
+user.last_name: Nom
+user.user_name: Nom d'utilisateur
 
 # Enums
 ## Enum - Status

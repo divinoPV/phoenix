@@ -12,14 +12,18 @@
                             <p>{{ error.messageKey|trans(error.messageData, 'security') }}</p>
                         </div>
                     {% endif %}
-                    <h1 class="h3 mb-3 font-weight-normal">{{ 'security.login.title'|trans }}</h1>
-                    <label for="inputEmail">{{ 'user.email'|trans }}</label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-                    <label for="inputPassword">{{ 'user.password'|trans }}</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    <h1 class="mb-3">{{ 'security.login.title'|trans }}</h1>
+                    <div class="mb-3">
+                        <label for="inputEmail">{{ 'user.email'|trans }}</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                    </div>
+                    <div class="mb-4">
+                        <label for="inputPassword">{{ 'user.password'|trans }}</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <button class="btn btn-lg btn-primary mt-3" type="submit">{{ 'security.login.submit'|trans }}</button>
-                    <a href="{{ path('register') }}" class="btn btn-secondary mt-3">{{ 'security.login.sign_up'|trans }}</a>
+                    <button class="btn btn-primary" type="submit">{{ 'security.login.submit'|trans }}</button>
+                    <a href="{{ path('register') }}" class="btn btn-secondary">{{ 'security.login.sign_up'|trans }}</a>
                 </form>
             </div>
         </div>
