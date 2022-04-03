@@ -3,6 +3,9 @@
 {% block title %}{{ project.name }}{% endblock %}
 
 {% block main %}
+    <div class="x-margin">
+        {% include 'app/common/button/_back.html.twig' with {path_back: path('projects')} only %}
+    </div>
     <div class="o-container">
         <h1 class="o-title x-noMargin">
             {{ project.name }}
@@ -81,34 +84,19 @@
                     </div>
                 </div>
             </div>
+            {% set projectShowLegend = projectShow ~ '__legend' %}
+            <div class="{{ projectShowLegend }}">
+                <span class="{{ projectShowLegend }}__label o-title--section">{{ 'project.show.legend'|trans }}</span>
+                {% set projectShowLegendContainer = projectShowLegend ~ '__container' %}
+                <div class="{{ projectShowLegendContainer }}">
+                    {% for item in legend %}
+                        <div class="{{ projectShowLegendContainer }}__item">
+                            <span class="o-btn" style="background-color: {{ item.1 }};">{{ item.0 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div id="js-projectShow__calendar" class="{{ projectShow }}__calendar"></div>
-            {% if project.risks is not null %}
-                {% set projectShowRisks = projectShow ~ '__risks' %}
-                <div class="{{ projectShowRisks }}">
-                    {% for risk in project.risks %}
-                        <div class="{{ projectShowRisks }}__item">
-                            <span>{{ risk.name }}</span>
-                            <span>{{ 'project.show.risk.identification'|trans }} {{ risk.identification|date('d/m/Y') }}</span>
-                            <span>{{ 'project.show.risk.resolution'|trans }} {{ risk.resolution|date('d/m/Y') }}</span>
-                            <span>{{ 'project.show.probability'|trans }} {{ risk.probability.label|trans }}</span>
-                            <span>{{ 'project.show.severity'|trans }} {{ risk.severity.label|trans }}</span>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            {% if project.facts is not null %}
-                {% set projectShowFacts = projectShow ~ '__facts' %}
-                <div class="{{ projectShowFacts }}">
-                    {% for fact in project.facts %}
-                        <div class="{{ projectShowFacts }}__item">
-                            <span>{{ fact.name }}</span>
-                            <span>{{ fact.description }}</span>
-                            <span>{{ fact.occurred|date('d/m/Y') }}</span>
-                            <span>{{ fact.milestone.label|trans }}</span>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
         </div>
     </div>
 {% endblock main %}

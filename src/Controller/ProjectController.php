@@ -7,7 +7,6 @@ use App\Entity\Risk;
 use App\Enum\CalendarEnum;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -51,7 +50,8 @@ final class ProjectController extends AbstractController
 
         return $this->render('app/project/show.html.twig', [
             'data' => json_encode($data),
-            'project' => $projectRepository->find($uuid),
+            'legend' => [['Risque', CalendarEnum::Risk->value], ['Fait', CalendarEnum::Fact->value]],
+            'project' => $projectRepository->find($uuid)
         ]);
     }
 

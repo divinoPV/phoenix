@@ -9,7 +9,7 @@ final class BudgetFixtures extends BaseFixture
 {
     public const REFERENCE = 'budget_';
 
-    public const NUMBER_ELEMENT = 21;
+    public const NUMBER_ELEMENT = ProjectFixtures::NUMBER_ELEMENT;
 
     protected function generate(ObjectManager $manager): void
     {

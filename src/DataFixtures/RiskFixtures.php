@@ -12,7 +12,7 @@ final class RiskFixtures extends BaseFixture implements DependentFixtureInterfac
 {
     public const REFERENCE = 'risk_';
 
-    public const NUMBER_ELEMENT = 367;
+    public const NUMBER_ELEMENT = 256;
 
     protected function generate(ObjectManager $manager): void
     {

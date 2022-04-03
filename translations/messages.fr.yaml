@@ -2,6 +2,7 @@
 common.title: Phoenix
 common.logo: Logo du site
 common.new: Nouveau
+common.back: Retour
 common.export: Exporter
 common.export.globale: Export global
 
@@ -39,19 +40,19 @@ project.show.archived.true: Archivé
 project.show.archived.false: Actif
 project.show.startedAt: À commencé le
 project.show.endedAt: et fini le
-project.show.description: 'Description :'
-project.show.budget: 'Budget :'
+project.show.description: Description
+project.show.budget: Budget
 project.show.original: 'Initial :'
 project.show.consumed: 'Consommé :'
 project.show.remaining: 'Reste à faire :'
 project.show.landing: 'Atterrissage :'
-project.show.portfolio: 'Portefeuille :'
+project.show.portfolio: Portefeuille
 project.show.portfolio.name: 'Nom :'
 project.show.portfolio.responsible.full_name: 'Responsable :'
-project.show.teamProject: 'Équipe projet :'
+project.show.teamProject: Équipe projet
 project.show.teamProject.name: 'Nom :'
 project.show.teamProject.responsible.full_name: 'CP :'
-project.show.teamCustomer: 'Client :'
+project.show.teamCustomer: Client
 project.show.teamCustomer.name: 'Nom :'
 project.show.teamCustomer.responsible.full_name: 'CP client :'
 project.show.risk.identification: Identifier le
@@ -62,6 +63,7 @@ project.show.createdAt: Créé le
 project.show.updatedAt: Mis à jour le
 project.show.createdBy: par
 project.show.updatedBy: par
+project.show.legend: Légende
 
 # Enums
 ## Enum - Status

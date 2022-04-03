@@ -11,7 +11,7 @@ final class FactFixtures extends BaseFixture implements DependentFixtureInterfac
 {
     public const REFERENCE = 'fact_';
 
-    public const NUMBER_ELEMENT = 421;
+    public const NUMBER_ELEMENT = 586;
 
     protected function generate(ObjectManager $manager): void
     {

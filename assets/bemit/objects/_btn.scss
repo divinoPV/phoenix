@@ -1,5 +1,14 @@
 .o-btn {
+  align-items: center;
+  background-color: $blue-sapphire;
   border-radius: 21px;
   color: $white;
-  padding: 5px 8px;
+  display: inline-flex;
+  gap: 8px;
+  padding: 5px 13px;
+  text-decoration: none;
+
+  svg {
+    fill: $white;
+  }
 }
