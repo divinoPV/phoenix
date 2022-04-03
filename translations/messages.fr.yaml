@@ -17,6 +17,19 @@ flash.form.catch_error: Erreur lors de la validation du formulaire, contactez l'
 nav.dashboard: Tableau de bord
 nav.projects: Projets
 nav.admin: Administration
+nav.logout: Déconnexion
+nav.login: Connexion
+nav.register: Inscription
+
+# Securities
+# Security - Login
+security.login.title: Connexion
+security.login.submit: Se connecter
+security.login.sign_up: S'inscrire
+
+# Security - Registration
+security.registration.title: Inscription
+security.registration.submit: S'inscrire
 
 # Views
 ## View - Project
@@ -78,6 +91,11 @@ project.add.title: Nouveau projet
 ### View - Project - Edit
 project.edit.title: Modifier le projet
 
+# Entities
+## Entity - User
+user.email: Email
+user.password: Mot de passe
+
 # Enums
 ## Enum - Status
 enum.status:
@@ -101,11 +119,15 @@ enum.status:
         label: En cours de test
 
 ## Enum - Role
-enum.role:
-    admin:
+enum:
+    ROLE_ADMIN:
         label: Administrateur
-    user:
+    ROLE_USER:
         label: Utilisateur
+    ROLE_MEMBER:
+        label: Membre
+    ROLE_RESPONSIBLE:
+        label: Responsable
 
 ## Enum - Milestone
 enum.milestone:

@@ -8,6 +8,8 @@ enum UserRoleEnum: string
 {
     use Trumpable;
 
-    case Admin = 'role.admin';
-    case User = 'role.user';
+    case Admin = 'ROLE_ADMIN';
+    case User = 'ROLE_USER';
+    case Member = 'ROLE_MEMBER';
+    case Responsible = 'ROLE_RESPONSIBLE';
 }

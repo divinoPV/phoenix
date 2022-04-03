@@ -17,9 +17,9 @@ class Portfolio
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
-    #[ORM\ManyToOne(targetEntity: Responsible::class, inversedBy: 'portfolios')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'portfolios')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Responsible $responsible;
+    private ?User $responsible;
 
     #[Pure] public function __construct(
         #[ORM\OneToMany(mappedBy: 'portfolio', targetEntity: Project::class)]
@@ -39,12 +39,12 @@ class Portfolio
         return $this;
     }
 
-    public function getResponsible(): ?Responsible
+    public function getResponsible(): ?User
     {
         return $this->responsible;
     }
 
-    public function setResponsible(?Responsible $responsible): static
+    public function setResponsible(?User $responsible): static
     {
         $this->responsible = $responsible;
 

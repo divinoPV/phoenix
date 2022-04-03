@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'security.login.title'|trans }}{% endblock %}
+
+{% block main %}
+    <section class="container my-3">
+        <div class="row">
+            <div class="col">
+                <form method="post">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <p>{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                        </div>
+                    {% endif %}
+                    <h1 class="h3 mb-3 font-weight-normal">{{ 'security.login.title'|trans }}</h1>
+                    <label for="inputEmail">{{ 'user.email'|trans }}</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                    <label for="inputPassword">{{ 'user.password'|trans }}</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button class="btn btn-lg btn-primary mt-3" type="submit">{{ 'security.login.submit'|trans }}</button>
+                    <a href="{{ path('register') }}" class="btn btn-secondary mt-3">{{ 'security.login.sign_up'|trans }}</a>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock main %}

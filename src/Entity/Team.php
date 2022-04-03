@@ -17,9 +17,9 @@ class Team
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
-    #[ORM\ManyToOne(targetEntity: Responsible::class, inversedBy: 'teams')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'teams')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Responsible $responsible;
+    private ?User $responsible;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'teams')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: true)]
@@ -33,7 +33,7 @@ class Team
         private ?Collection $projects = new ArrayCollection,
         #[ORM\OneToMany(mappedBy: 'teamCustomer', targetEntity: Project::class)]
         private ?Collection $projectsCustomer = new ArrayCollection,
-        #[ORM\OneToMany(mappedBy: 'team', targetEntity: Member::class)]
+        #[ORM\OneToMany(mappedBy: 'team', targetEntity: User::class)]
         private ?Collection $members = new ArrayCollection,
         #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
         private ?Collection $teams = new ArrayCollection
@@ -52,12 +52,12 @@ class Team
         return $this;
     }
 
-    public function getResponsible(): ?Responsible
+    public function getResponsible(): ?User
     {
         return $this->responsible;
     }
 
-    public function setResponsible(?Responsible $responsible): static
+    public function setResponsible(?User $responsible): static
     {
         $this->responsible = $responsible;
 
@@ -133,7 +133,7 @@ class Team
         return $this->members;
     }
 
-    public function addMember(Member $member): static
+    public function addMember(User $member): static
     {
         if (!$this->members->contains($member)) {
             $this->members[] = $member;
@@ -143,7 +143,7 @@ class Team
         return $this;
     }
 
-    public function removeMember(Member $member): static
+    public function removeMember(User $member): static
     {
         if ($this->members->removeElement($member)) {
             if ($member->getTeam() === $this) {
