@@ -22,7 +22,8 @@ class Portfolio
     private ?User $responsible;
 
     #[Pure] public function __construct(
-        #[ORM\OneToMany(mappedBy: 'portfolio', targetEntity: Project::class)]
+        #[ORM\OneToMany(mappedBy: 'portfolio', targetEntity: Project::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
         private ?Collection $projects = new ArrayCollection
     ) {
     }

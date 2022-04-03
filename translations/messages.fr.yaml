@@ -109,6 +109,23 @@ project.add.title: Nouveau projet
 ## View - Project - Edit
 project.edit.title: Modifier le projet
 
+## View - Admin
+admin.title: Administration
+
+## View - Admin - User
+admin.user.title: Administration des utilisateurs
+
+## View - Admin - User - List
+admin.user.list.title: Liste des utilisateurs
+admin.user.list.type.none: Aucun
+admin.user.list.team.none: Aucune
+
+## View - Admin - User - Add
+admin.user.add.title: Ajouter un utilisateur
+
+## View - Admin - User - Edit
+admin.user.edit.title: Editer un utilisateur
+
 # Entities
 ## Entity - User
 user.email: Email
@@ -117,29 +134,29 @@ user.first_name: Prénom
 user.last_name: Nom
 user.user_name: Nom d'utilisateur
 user.type: Type de membre
+user.role: Rôles
+user.team: Équipe
+user.submit: Envoyer
+
+## Entity - Project
+project.name: Nom
+project.description: Description
+project.code: Code
+project.started_at: Commencé le
+project.ended_at: Terminé le
+project.status: Statut
+project.portfolio: Portefeuille
+project.team_project: Équipe projet
+project.team_customer: Client
+project.archived: Archivé
+
+## Entity - Budget
+budget.original: Initial
+budget.consumed: Consommé
+budget.remaining: Reste à faire
+budget.landing: Atterrissage
 
 # Enums
-## Enum - Status
-enum.status:
-    done:
-        label: Terminé
-    feedback:
-        label: Retour
-    need_review:
-        label: Besoin d'examen
-    pending:
-        label: En attente
-    start:
-        label: Commencé
-    tested:
-        label: Testé
-    to_test:
-        label: À tester
-    todo:
-        label: En cours
-    under_testing:
-        label: En cours de test
-
 ## Enum - Role
 enum:
     ROLE_ADMIN:

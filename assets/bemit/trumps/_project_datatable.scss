@@ -2,7 +2,8 @@
 .c-dashboard__myProjects,
 .c-dashboard__teamProjects,
 .c-dashboard__riskyProjects,
-.c-dashboard__factProjects
+.c-dashboard__factProjects,
+.c-user
 {
   &__list {
     border-radius: 13px;
@@ -46,5 +47,11 @@
         font-weight: 600;
       }
     }
+  }
+}
+
+.c-user__list {
+  &__leading, &__item {
+    grid-template-columns: repeat(7, 1fr);
   }
 }

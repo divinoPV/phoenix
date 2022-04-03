@@ -1,13 +1,13 @@
 {% extends 'app/app.html.twig' %}
 
-{% block title %}{{ 'project.edit.title'|trans }} {{ project.name }}{% endblock %}
+{% block title %}{{ 'project.edit.title'|trans }} - {{ project.name }}{% endblock title %}
 
 {% block main %}
     <div class="x-margin">
         {% include 'app/common/button/_back.html.twig' with {path_back: path('project', {'uuid': project.uuid})} only %}
     </div>
     <div class="o-container">
-        <h1 class="o-title x-noMargin">{{ 'project.add.title'|trans }}</h1>
+        <h1 class="o-title x-noMargin">{{ 'project.edit.title'|trans }} - {{ project.name }}</h1>
         {{ form(form) }}
     </div>
 {% endblock main %}

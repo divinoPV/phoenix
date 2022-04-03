@@ -1,6 +1,6 @@
 {% extends 'app/app.html.twig' %}
 
-{% block title %}{{ project.name }}{% endblock %}
+{% block title %}{{ project.name }}{% endblock title %}
 
 {% block main %}
     <div class="x-margin x-flex">
@@ -14,7 +14,7 @@
         <div class="o-leading">
             <h1 class="o-title x-noMargin">
                 {{ project.name }}
-                <span class="o-title__infoTag x-color--background__{{ project.status.color }} o-btn--noHover">{{ project.status.label|trans }}</span>
+                <span class="o-title__infoTag x-color--background__{{ project.status.color }} o-btn--noHover">{{ project.status.name }}</span>
                 <span class="o-title__infoTag--{{ project.hasArchived ? 'true' : 'false' }}">
                     {{ ('project.show.archived.' ~ (project.hasArchived ? 'true' : 'false'))|trans }}
                 </span>
