@@ -1,0 +1,10 @@
+.o-welcome {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  margin-left: 5%;
+
+  svg {
+    fill: $white;
+  }
+}

@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
-use App\Beable\Entity\Uuidable;
+use App\Enum\MemberTypeEnum;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\{PasswordAuthenticatedUserInterface, UserInterface};
 
-#[ORM\MappedSuperclass]
-abstract class User implements UserInterface,
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface,
                                PasswordAuthenticatedUserInterface,
                                TimestampableInterface
 {
@@ -37,6 +43,23 @@ abstract class User implements UserInterface,
 
     #[ORM\Column(type: 'string')]
     private ?string $password;
+
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'members')]
+    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: true)]
+    private ?Team $team = null;
+
+    #[ORM\Column(type: 'string', nullable: true, enumType: MemberTypeEnum::class)]
+    private ?MemberTypeEnum $type = null;
+
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Portfolio::class)]
+        #[ORM\JoinColumn(nullable: true)]
+        private ?Collection $portfolios = new ArrayCollection,
+        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Team::class)]
+        #[ORM\JoinColumn(nullable: true)]
+        private ?Collection $teams = new ArrayCollection
+    ) {
+    }
 
     public function getId(): ?int
     {
@@ -120,9 +143,7 @@ abstract class User implements UserInterface,
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
+    /** @see PasswordAuthenticatedUserInterface */
     public function getPassword(): string
     {
         return $this->password;
@@ -131,6 +152,82 @@ abstract class User implements UserInterface,
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getType(): ?MemberTypeEnum
+    {
+        return $this->type;
+    }
+
+    public function setType(?MemberTypeEnum $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPortfolios(): Collection
+    {
+        return $this->portfolios;
+    }
+
+    public function addPortfolio(Portfolio $portfolio): static
+    {
+        if (!$this->portfolios->contains($portfolio)) {
+            $this->portfolios[] = $portfolio;
+            $portfolio->setResponsible($this);
+        }
+
+        return $this;
+    }
+
+    public function removePortfolio(Portfolio $portfolio): static
+    {
+        if ($this->portfolios->removeElement($portfolio)) {
+            if ($portfolio->getResponsible() === $this) {
+                $portfolio->setResponsible(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): static
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setResponsible($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): static
+    {
+        if ($this->teams->removeElement($team)) {
+            if ($team->getResponsible() === $this) {
+                $team->setResponsible(null);
+            }
+        }
 
         return $this;
     }
