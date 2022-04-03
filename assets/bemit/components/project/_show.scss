@@ -9,7 +9,7 @@
           'calendar calendar'
           / 60% 1fr;
   ;
-  padding: 34px 55px;
+  padding: 34px;
 
   &__calendar {
     grid-area: calendar;
@@ -39,6 +39,11 @@
     display: flex;
     flex-direction: column;
     grid-area: leading;
+
+    &__code {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
 
     &__date {
       margin-bottom: 13px;

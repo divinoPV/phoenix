@@ -4,41 +4,47 @@
 
 {% block main %}
     <div class="x-margin x-flex">
-        {% include 'app/common/button/_edit.html.twig' with {path_edit: path('project_edit', {'uuid': project.uuid})} only %}
-        {% include 'app/common/button/_delete.html.twig' with {path_delete: path('project_delete', {'uuid': project.uuid})} only %}
-        {% include 'app/common/button/_back.html.twig' with {path_back: path('projects')} only %}
+        {% if app.user == project.createdBy or is_granted('ROLE_ADMIN') %}
+            {% include 'app/common/button/_edit.html.twig' with { path_edit: path('project_edit', { 'uuid': project.uuid }) } only %}
+            {% include 'app/common/button/_delete.html.twig' with { path_delete: path('project_delete', { 'uuid': project.uuid }) } only %}
+        {% endif %}
+        {% include 'app/common/button/_back.html.twig' with { path_back: path('projects'), label_back: 'project.show.back'|trans } only %}
     </div>
-    <div class="o-container">
-        <h1 class="o-title x-noMargin">
-            {{ project.name }}
-            <span class="o-title__infoTag x-color--background__{{ project.status.color }} o-btn--noHover">{{ project.status.label|trans }}</span>
-            <span class="o-title__infoTag--{{ project.hasArchived ? 'true' : 'false' }}">
-            {{ ('project.show.archived.' ~ (project.hasArchived ? 'true' : 'false'))|trans }}
-        </span>
-        </h1>
-        <div class="o-subtitle x-noMargin">
-        <span>
-            {{ 'project.show.createdAt'|trans }}
-            {{ project.createdAt|date('d/m/Y \\à h\\hi') }}
-            {% if project.createdBy is not null %}
-                {{ 'project.show.createdBy'|trans }}
-                {{ project.createdBy.fullName }}
-            {% endif %}
-        </span>
-            <span>
-            {{ 'project.show.updatedAt'|trans }}
-                {{ project.updatedAt|date('d/m/Y \\à h\\hi') }}
-                {% if project.updatedBy is not null %}
-                    {{ 'project.show.updatedBy'|trans }}
-                    {{ project.updatedBy.fullName }}
-                {% endif %}
-        </span>
+    <div class="x-margin">
+        <div class="o-leading">
+            <h1 class="o-title x-noMargin">
+                {{ project.name }}
+                <span class="o-title__infoTag x-color--background__{{ project.status.color }} o-btn--noHover">{{ project.status.label|trans }}</span>
+                <span class="o-title__infoTag--{{ project.hasArchived ? 'true' : 'false' }}">
+                    {{ ('project.show.archived.' ~ (project.hasArchived ? 'true' : 'false'))|trans }}
+                </span>
+            </h1>
+            <div class="o-subtitle x-noMargin">
+                <span>
+                    {{ 'project.show.createdAt'|trans }}
+                    {{ project.createdAt|date('d/m/Y \\à h\\hi') }}
+                    {% if project.createdBy is not null %}
+                        {{ 'project.show.createdBy'|trans }}
+                        {{ project.createdBy.fullName }}
+                        - {{ project.createdBy.username }}
+                    {% endif %}
+                </span>
+                <span>
+                    {{ 'project.show.updatedAt'|trans }}
+                    {{ project.updatedAt|date('d/m/Y \\à h\\hi') }}
+                    {% if project.updatedBy is not null %}
+                        {{ 'project.show.updatedBy'|trans }}
+                        {{ project.updatedBy.fullName }}
+                        - {{ project.updatedBy.username }}
+                    {% endif %}
+                </span>
+            </div>
         </div>
         {% set projectShow = 'c-projectShow' %}
         <div class="{{ projectShow }}">
             {% set projectShowLeading = projectShow ~ '__leading' %}
             <div class="{{ projectShowLeading }}">
-                <span>{{ 'project.show.code'|trans }} {{ project.code }}</span>
+                <span class="{{ projectShowLeading }}__code">{{ 'project.show.code'|trans }} {{ project.code }}</span>
                 <div class="{{ projectShowLeading }}__date">
                     <span>{{ 'project.show.startedAt'|trans }} {{ project.startedAt|date('d/m/Y') }}</span>
                     <span>{{ 'project.show.endedAt'|trans }} {{ project.endedAt|date('d/m/Y') }}</span>

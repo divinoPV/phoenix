@@ -12,7 +12,7 @@ final class RiskFixtures extends BaseFixture implements DependentFixtureInterfac
 {
     public const REFERENCE = 'risk_';
 
-    public const NUMBER_ELEMENT = 256;
+    public const NUMBER_ELEMENT = 75;
 
     protected function generate(ObjectManager $manager): void
     {
@@ -20,10 +20,10 @@ final class RiskFixtures extends BaseFixture implements DependentFixtureInterfac
             $risk
                 ->setName(\implode(' ', $this->faker->words()))
                 ->setIdentification($identification = (new \DateTimeImmutable)->setTimestamp(mt_rand((new \DateTimeImmutable)->getTimestamp(), (new \DateTimeImmutable)->add(\DateInterval::createFromDateString('2 weeks'))->getTimestamp())))
-                ->setResolution((new \DateTimeImmutable)->setTimestamp(mt_rand($identification->getTimestamp(), $identification->add(\DateInterval::createFromDateString('1 months'))->getTimestamp())))
+                ->setResolution((new \DateTimeImmutable)->setTimestamp(\mt_rand($identification->getTimestamp(), $identification->add(\DateInterval::createFromDateString('1 months'))->getTimestamp())))
                 ->setProbability(ProbabilityEnum::random())
                 ->setSeverity(SeverityEnum::random())
-                ->setProject($this->getReference(ProjectFixtures::REFERENCE . rand(1, ProjectFixtures::NUMBER_ELEMENT)))
+                ->setProject($this->getReference(ProjectFixtures::REFERENCE . \rand(1, ProjectFixtures::NUMBER_ELEMENT)))
             ;
         }, self::REFERENCE);
     }

@@ -17,7 +17,10 @@ final class PortfolioFixtures extends BaseFixture implements DependentFixtureInt
         $this->create(Portfolio::class, self::NUMBER_ELEMENT, function (Portfolio $portfolio) {
             $portfolio
                 ->setName($this->faker->sentence())
-                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
+                ->setResponsible($this->getReference(\rand(0, 1)
+                    ? UserFixtures::REFERENCE['responsible_project'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_project'])
+                    : UserFixtures::REFERENCE['responsible_customer'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_customer'])
+                ))
             ;
         }, self::REFERENCE);
     }

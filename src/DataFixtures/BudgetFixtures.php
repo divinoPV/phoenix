@@ -16,8 +16,8 @@ final class BudgetFixtures extends BaseFixture
         $this->create(Budget::class, self::NUMBER_ELEMENT, function (Budget $budget) {
             $budget
                 ->setOriginal($original = \random_int(2_000, 80_000))
-                ->setConsumed($consumed = \random_int(0, $original))
-                ->setRemaining($remaining = \random_int(0, $original))
+                ->setConsumed($consumed = \random_int(400, $original))
+                ->setRemaining($remaining = \random_int(400, $original))
                 ->setLanding($consumed + $remaining)
             ;
         }, self::REFERENCE);

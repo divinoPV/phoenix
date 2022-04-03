@@ -11,7 +11,7 @@ final class FactFixtures extends BaseFixture implements DependentFixtureInterfac
 {
     public const REFERENCE = 'fact_';
 
-    public const NUMBER_ELEMENT = 586;
+    public const NUMBER_ELEMENT = 161;
 
     protected function generate(ObjectManager $manager): void
     {
@@ -21,7 +21,7 @@ final class FactFixtures extends BaseFixture implements DependentFixtureInterfac
                 ->setDescription(\implode(' ', $this->faker->sentences()))
                 ->setOccurred((new \DateTimeImmutable)->setTimestamp(mt_rand((new \DateTimeImmutable)->getTimestamp(), (new \DateTimeImmutable)->add(\DateInterval::createFromDateString('1 months'))->getTimestamp())))
                 ->setMilestone(MilestoneEnum::random())
-                ->setProject($this->getReference(ProjectFixtures::REFERENCE . rand(1, ProjectFixtures::NUMBER_ELEMENT)))
+                ->setProject($this->getReference(ProjectFixtures::REFERENCE . \rand(1, ProjectFixtures::NUMBER_ELEMENT)))
             ;
         }, self::REFERENCE);
     }

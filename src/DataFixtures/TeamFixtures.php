@@ -21,24 +21,34 @@ final class TeamFixtures extends BaseFixture implements DependentFixtureInterfac
         $this->create(Team::class, self::NUMBER_ELEMENT, function (Team $team) {
             $team
                 ->setName(\implode(' ', $this->faker->words()))
-                ->setType(TeamTypeEnum::random())
-                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
+                ->setType(TeamTypeEnum::Project)
+                ->setResponsible($this->getReference(UserFixtures::REFERENCE['responsible_project'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_project'])))
             ;
         }, self::REFERENCE_PROJECT);
 
         $this->create(Team::class, self::NUMBER_ELEMENT, function (Team $team) {
             $team
                 ->setName(\implode(' ', $this->faker->words()))
-                ->setType(TeamTypeEnum::random())
-                ->setResponsible($this->getReference(UserFixtures::REFERENCE_RESPONSIBLE . rand(1, UserFixtures::NUMBER_ELEMENT)))
+                ->setType(TeamTypeEnum::Customer)
+                ->setResponsible($this->getReference(UserFixtures::REFERENCE['responsible_customer'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_customer'])))
             ;
         }, self::REFERENCE_CUSTOMER);
 
-        foreach (range(1, UserFixtures::NUMBER_ELEMENT) as $i) {
-            $member = $this->getReference(UserFixtures::REFERENCE_MEMBER . $i);
+        $this->assignTeamToMembers($manager, UserFixtures::NUMBER_ELEMENT['responsible_project'], UserFixtures::REFERENCE['responsible_project']);
+        $this->assignTeamToMembers($manager, UserFixtures::NUMBER_ELEMENT['responsible_customer'], UserFixtures::REFERENCE['responsible_customer']);
+        $this->assignTeamToMembers($manager, UserFixtures::NUMBER_ELEMENT['member_project'], UserFixtures::REFERENCE['member_project']);
+        $this->assignTeamToMembers($manager, UserFixtures::NUMBER_ELEMENT['member_customer'], UserFixtures::REFERENCE['member_customer']);
+    }
+
+    public function assignTeamToMembers(ObjectManager $manager, int $count, string $reference): void
+    {
+        foreach (range(1, $count) as $i) {
+            $member = $this->getReference($reference . $i);
             $manager->persist($member->setTeam($this->getReference((
-                $member->getType() === MemberTypeEnum::Customer ? self::REFERENCE_CUSTOMER : self::REFERENCE_PROJECT
-            ) . rand(1, self::NUMBER_ELEMENT))));
+                $member->getType() === MemberTypeEnum::Customer
+                    ? self::REFERENCE_CUSTOMER
+                    : self::REFERENCE_PROJECT
+            ) . \rand(1, self::NUMBER_ELEMENT))));
         }
         $manager->flush();
     }

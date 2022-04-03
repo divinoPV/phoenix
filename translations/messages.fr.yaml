@@ -33,11 +33,27 @@ security.registration.title: Inscription
 security.registration.submit: S'inscrire
 
 # Views
+## View - Dashboard
+dashboard.title: Tableau de bord
+dashboard.title.user: de
+dashboard.personal.title: Mes projets
+dashboard.personal.info: Tous vos projets qu'ils soient archivés ou non.
+dashboard.personal.no_project: Vous n'avez pas encore de projet.
+dashboard.team.title: Projets de mon équipe
+dashboard.team.info: Tous les projets de votre équipe qu'ils soient archivés ou non.
+dashboard.team.no_project: Votre équipe n'a pas encore de projet.
+dashboard.risky.title: Projets risqués
+dashboard.risky.info: Tous les projets risqués non archivés uniquement.
+dashboard.risky.no_project: Il n'y a aucun projet risqué.
+dashboard.fact.title: Projets avec des faits
+dashboard.fact.info: Tous les projets avec des faits non archivés uniquement.
+dashboard.fact.no_project: Il n'y a aucun projet avec des faits.
+
 ## View - Project
 project.title: Projets
-project.no_project: Aucun projet
+project.no_project: Il n'y a pas encore de projet
 
-### View - Project - List
+## View - Project - List
 project.list.code: Code
 project.list.name: Nom
 project.list.teamProject.responsible.full_name: CP
@@ -54,7 +70,7 @@ project.list.endedAt: Terminé
 project.list.archived: Archivé
 project.list.updatedAt: Mis à jour
 
-### View - Project - Show
+## View - Project - Show
 project.show.code: 'Code :'
 project.show.status: 'Statut :'
 project.show.archived.true: Archivé
@@ -85,11 +101,12 @@ project.show.updatedAt: Mis à jour le
 project.show.createdBy: par
 project.show.updatedBy: par
 project.show.legend: Légende
+project.show.back: Retour aux projets
 
-### View - Project - Add
+## View - Project - Add
 project.add.title: Nouveau projet
 
-### View - Project - Edit
+## View - Project - Edit
 project.edit.title: Modifier le projet
 
 # Entities
@@ -99,6 +116,7 @@ user.password: Mot de passe
 user.first_name: Prénom
 user.last_name: Nom
 user.user_name: Nom d'utilisateur
+user.type: Type de membre
 
 # Enums
 ## Enum - Status
@@ -194,8 +212,8 @@ enum.probability:
 
 ## Enum - Member type
 enum.member_type:
-    project_chief:
-        label: Chef de projet
+    project:
+        label: Projet
     customer:
         label: Client
 
