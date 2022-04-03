@@ -2,30 +2,39 @@
 
 namespace App\Entity;
 
-use App\Traits\Entity\UuidableTrait;
+use App\Enum\MemberTypeEnum;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\{PasswordAuthenticatedUserInterface, UserInterface};
 
-#[ORM\MappedSuperclass]
-abstract class User implements UserInterface,
-                               PasswordAuthenticatedUserInterface,
-                               TimestampableInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableInterface
 {
-    use UuidableTrait, TimestampableTrait;
+    use TimestampableTrait;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name;
+    private ?string $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $lastname;
+    private ?string $lastName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $username;
+    private ?string $userName;
 
     #[ORM\Column(type: 'json')]
     private ?array $roles = [];
@@ -33,50 +42,72 @@ abstract class User implements UserInterface,
     #[ORM\Column(type: 'string')]
     private ?string $password;
 
+    #[ORM\Column(type: 'string', nullable: true, enumType: MemberTypeEnum::class)]
+    private ?MemberTypeEnum $type = null;
+
+    #[ORM\ManyToOne(targetEntity: Team::class, cascade: ['persist', 'remove'], inversedBy: 'members')]
+    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: true)]
+    private ?Team $team = null;
+
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Portfolio::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+        private ?Collection $portfolios = new ArrayCollection,
+        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Team::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+        private ?Collection $teams = new ArrayCollection
+    ) {
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->name;
+        return $this->firstName;
     }
 
-    public function setName(string $name): self
+    public function setFirstName(string $firstName): static
     {
-        $this->name = $name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastName(): ?string
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
-    public function setLastname(string $lastname): self
+    public function setLastName(string $lastName): static
     {
-        $this->lastname = $lastname;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getUsername(): ?string
+    public function getUserName(): ?string
     {
-        return $this->username;
+        return $this->userName;
     }
 
-    public function setUsername(string $username): self
+    public function setUserName(string $userName): static
     {
-        $this->username = $username;
+        $this->userName = $userName;
 
         return $this;
     }
@@ -97,30 +128,102 @@ abstract class User implements UserInterface,
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): static
     {
         $this->roles = $roles;
 
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
+    /** @see PasswordAuthenticatedUserInterface */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getType(): ?MemberTypeEnum
+    {
+        return $this->type;
+    }
+
+    public function setType(?MemberTypeEnum $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getPortfolios(): Collection
+    {
+        return $this->portfolios;
+    }
+
+    public function addPortfolio(Portfolio $portfolio): static
+    {
+        if (!$this->portfolios->contains($portfolio)) {
+            $this->portfolios[] = $portfolio;
+            $portfolio->setResponsible($this);
+        }
+
+        return $this;
+    }
+
+    public function removePortfolio(Portfolio $portfolio): static
+    {
+        if ($this->portfolios->removeElement($portfolio)) {
+            if ($portfolio->getResponsible() === $this) {
+                $portfolio->setResponsible(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): static
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setResponsible($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): static
+    {
+        if ($this->teams->removeElement($team)) {
+            if ($team->getResponsible() === $this) {
+                $team->setResponsible(null);
+            }
+        }
 
         return $this;
     }
@@ -132,5 +235,10 @@ abstract class User implements UserInterface,
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 }

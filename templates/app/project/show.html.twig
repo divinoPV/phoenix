@@ -1,0 +1,129 @@
+{% extends 'app/app.html.twig' %}
+
+{% block title %}{{ project.name }}{% endblock title %}
+
+{% block main %}
+    <div class="x-margin x-flex">
+        {% if app.user == project.createdBy or is_granted('ROLE_ADMIN') %}
+            {% include 'app/common/button/_edit.html.twig' with { path_edit: path('project_edit', { 'uuid': project.uuid }) } only %}
+            {% include 'app/common/button/_delete.html.twig' with { path_delete: path('project_delete', { 'uuid': project.uuid }) } only %}
+        {% endif %}
+        {% include 'app/common/button/_back.html.twig' with { path_back: path('projects'), label_back: 'project.show.back'|trans } only %}
+    </div>
+    <div class="x-margin">
+        <div class="o-leading">
+            <h1 class="o-title x-noMargin">
+                {{ project.name }}
+                <span class="o-title__infoTag x-color--background__{{ project.status.color }} o-btn--noHover">{{ project.status.name }}</span>
+                <span class="o-title__infoTag--{{ project.hasArchived ? 'true' : 'false' }}">
+                    {{ ('project.show.archived.' ~ (project.hasArchived ? 'true' : 'false'))|trans }}
+                </span>
+            </h1>
+            <div class="o-subtitle x-noMargin">
+                <span>
+                    {{ 'project.show.createdAt'|trans }}
+                    {{ project.createdAt|date('d/m/Y \\à h\\hi') }}
+                    {% if project.createdBy is not null %}
+                        {{ 'project.show.createdBy'|trans }}
+                        {{ project.createdBy.fullName }}
+                        - {{ project.createdBy.username }}
+                    {% endif %}
+                </span>
+                <span>
+                    {{ 'project.show.updatedAt'|trans }}
+                    {{ project.updatedAt|date('d/m/Y \\à h\\hi') }}
+                    {% if project.updatedBy is not null %}
+                        {{ 'project.show.updatedBy'|trans }}
+                        {{ project.updatedBy.fullName }}
+                        - {{ project.updatedBy.username }}
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        {% set projectShow = 'c-projectShow' %}
+        <div class="{{ projectShow }}">
+            {% set projectShowLeading = projectShow ~ '__leading' %}
+            <div class="{{ projectShowLeading }}">
+                <span class="{{ projectShowLeading }}__code">{{ 'project.show.code'|trans }} {{ project.code }}</span>
+                <div class="{{ projectShowLeading }}__date">
+                    <span>{{ 'project.show.startedAt'|trans }} {{ project.startedAt|date('d/m/Y') }}</span>
+                    <span>{{ 'project.show.endedAt'|trans }} {{ project.endedAt|date('d/m/Y') }}</span>
+                </div>
+                {% set projectShowLeadingDescription = projectShowLeading ~ '__description' %}
+                <div class="{{ projectShowLeadingDescription }}">
+                    <span class="{{ projectShowLeadingDescription }}__label o-title--section">{{ 'project.show.description'|trans }}</span>
+                    <p class="{{ projectShowLeadingDescription }}__value">{{ project.description }}</p>
+                </div>
+            </div>
+            {% set projectShowContent = projectShow ~ '__content' %}
+            <div class="{{ projectShowContent }}">
+                {% set projectShowContentBudget = projectShowContent ~ '__budget' %}
+                <div class="{{ projectShowContentBudget }}">
+                    <strong class="{{ projectShowContentBudget }}__label o-title--section">{{ 'project.show.budget'|trans }}</strong>
+                    <div class="{{ projectShowContentBudget }}__values">
+                        <span>{{ 'project.show.original'|trans }} {{ project.budget.original }} €</span>
+                        <span>{{ 'project.show.consumed'|trans }} {{ project.budget.consumed }} €</span>
+                        <span>{{ 'project.show.remaining'|trans }} {{ project.budget.remaining }} €</span>
+                        <span>{{ 'project.show.landing'|trans }} {{ project.budget.landing }} €</span>
+                    </div>
+                </div>
+                {% set projectShowContentPortfolio = projectShowContent ~ '__portfolio' %}
+                <div class="{{ projectShowContentPortfolio }}">
+                    <strong class="{{ projectShowContentPortfolio }}__label o-title--section">{{ 'project.show.portfolio'|trans }}</strong>
+                    <div class="{{ projectShowContentPortfolio }}__values">
+                        <span>{{ 'project.show.portfolio.name'|trans }} {{ project.portfolio.name }}</span>
+                        <span>{{ 'project.show.portfolio.responsible.full_name'|trans }} {{ project.portfolio.responsible.fullName }}.</span>
+                    </div>
+                </div>
+                {% set projectShowContentTeamProject = projectShowContent ~ '__teamProject' %}
+                <div class="{{ projectShowContentTeamProject }}">
+                    <strong class="{{ projectShowContentTeamProject }}__label o-title--section">{{ 'project.show.teamProject'|trans }}</strong>
+                    <div class="{{ projectShowContentTeamProject }}__values">
+                        <span>{{ 'project.show.teamProject.name'|trans }} {{ project.teamProject.name }}.</span>
+                        <span>{{ 'project.show.teamProject.responsible.full_name'|trans }} {{ project.teamProject.responsible.fullName }}.</span>
+                    </div>
+                </div>
+                {% set projectShowContentTeamCustomer = projectShowContent ~ '__teamCustomer' %}
+                <div class="{{ projectShowContentTeamCustomer }}">
+                    <strong class="{{ projectShowContentTeamCustomer }}__label o-title--section">{{ 'project.show.teamCustomer'|trans }}</strong>
+                    <div class="{{ projectShowContentTeamCustomer }}__values">
+                        <span>{{ 'project.show.teamCustomer.name'|trans }} {{ project.teamCustomer.name }}.</span>
+                        <span>{{ 'project.show.teamCustomer.responsible.full_name'|trans }} {{ project.teamCustomer.responsible.fullName }}.</span>
+                    </div>
+                </div>
+            </div>
+            {% set projectShowLegend = projectShow ~ '__legend' %}
+            <div class="{{ projectShowLegend }}">
+                <span class="{{ projectShowLegend }}__label o-title--section">{{ 'project.show.legend'|trans }}</span>
+                {% set projectShowLegendContainer = projectShowLegend ~ '__container' %}
+                <div class="{{ projectShowLegendContainer }}">
+                    {% for item in legend %}
+                        <div class="{{ projectShowLegendContainer }}__item">
+                            <span class="o-btn--noHover" style="background-color: {{ item.1 }};">{{ item.0 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="js-projectShow__calendar" class="{{ projectShow }}__calendar"></div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block javascripts %}
+    <script>
+      let calendar = new FullCalendar.Calendar(document.getElementById('js-projectShow__calendar'), {
+        initialView: 'dayGridMonth',
+        locale: 'fr',
+        timeZone: 'Europe/Paris',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay',
+        },
+        events: {{ data|raw }},
+      });
+
+      calendar.render();
+    </script>
+{% endblock javascripts %}
+

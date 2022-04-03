@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Project;
-use App\Enum\StatusEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -15,28 +14,35 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
 
     protected function generate(ObjectManager $manager): void
     {
-        $this->create(Project::class, self::NUMBER_ELEMENT, function (Project $project) {
+        $this->create(Project::class, self::NUMBER_ELEMENT, function (Project $project, int $i) {
             $project
                 ->setName(\implode(' ', $this->faker->words()))
-                ->setDescription(\implode(' ', $this->faker->sentences()))
-                ->setStatus($this->getReference(StatusFixtures::REFERENCE . rand(0, count(StatusEnum::cases()) - 1)))
-                ->setStartedAt($startedAt = new \DateTimeImmutable())
-                ->setEndedAt((new \DateTimeImmutable())->setTimestamp(mt_rand($startedAt->getTimestamp(), $startedAt->add(\DateInterval::createFromDateString('9 months'))->getTimestamp())))
+                ->setDescription(\implode(' ', $this->faker->sentences(\rand(15, 45))))
+                ->setStatus($this->getReference(StatusFixtures::REFERENCE . \rand(1, StatusFixtures::NUMBER_ELEMENT)))
+                ->setStartedAt($startedAt = new \DateTimeImmutable)
+                ->setEndedAt((new \DateTimeImmutable)->setTimestamp(\mt_rand($startedAt->getTimestamp(), $startedAt->add(\DateInterval::createFromDateString('7 months'))->getTimestamp())))
                 ->setCode($this->faker->word())
-                ->setPortfolio($this->getReference(PortfolioFixtures::REFERENCE . rand(1, PortfolioFixtures::NUMBER_ELEMENT)))
-                ->setBudget($this->getReference(BudgetFixtures::REFERENCE . rand(1, BudgetFixtures::NUMBER_ELEMENT)))
-                ->setTeamCustomer($this->getReference(TeamFixtures::REFERENCE_CUSTOMER . rand(1, TeamFixtures::NUMBER_ELEMENT)))
-                ->setTeamProject($this->getReference(TeamFixtures::REFERENCE_PROJECT . rand(1, TeamFixtures::NUMBER_ELEMENT)));
+                ->setArchived(\rand(0, 1))
+                ->setBudget($this->getReference(BudgetFixtures::REFERENCE . $i))
+                ->setPortfolio($this->getReference(PortfolioFixtures::REFERENCE . \rand(1, PortfolioFixtures::NUMBER_ELEMENT)))
+                ->setTeamCustomer($this->getReference(TeamFixtures::REFERENCE_CUSTOMER . \rand(1, TeamFixtures::NUMBER_ELEMENT)))
+                ->setTeamProject($this->getReference(TeamFixtures::REFERENCE_PROJECT . \rand(1, TeamFixtures::NUMBER_ELEMENT)))
+                ->setCreatedBy($this->getReference(\rand(0, 1)
+                    ? UserFixtures::REFERENCE['responsible_project'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_project'])
+                    : UserFixtures::REFERENCE['responsible_customer'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_customer'])
+                ))
+            ;
         }, self::REFERENCE);
     }
 
     public function getDependencies(): array
     {
         return [
-            StatusFixtures::class,
             TeamFixtures::class,
             PortfolioFixtures::class,
-            BudgetFixtures::class
+            BudgetFixtures::class,
+            UserFixtures::class,
+            StatusFixtures::class
         ];
     }
 }

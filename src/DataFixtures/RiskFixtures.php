@@ -12,25 +12,26 @@ final class RiskFixtures extends BaseFixture implements DependentFixtureInterfac
 {
     public const REFERENCE = 'risk_';
 
-    public const NUMBER_ELEMENT = 67;
+    public const NUMBER_ELEMENT = 75;
 
     protected function generate(ObjectManager $manager): void
     {
         $this->create(Risk::class, self::NUMBER_ELEMENT, function (Risk $risk) {
             $risk
                 ->setName(\implode(' ', $this->faker->words()))
-                ->setIdentification($identification = new \DateTimeImmutable())
-                ->setProbability($this->getReference(ProbabilityFixtures::REFERENCE . rand(0, count(ProbabilityEnum::cases()) - 1)))
-                ->setResolution((new \DateTimeImmutable())->setTimestamp(mt_rand($identification->getTimestamp(), $identification->add(\DateInterval::createFromDateString('5 months'))->getTimestamp())))
-                ->setSeverity($this->getReference(SeverityFixtures::REFERENCE . rand(0, count(SeverityEnum::cases()) - 1)));
+                ->setIdentification($identification = (new \DateTimeImmutable)->setTimestamp(mt_rand((new \DateTimeImmutable)->getTimestamp(), (new \DateTimeImmutable)->add(\DateInterval::createFromDateString('2 weeks'))->getTimestamp())))
+                ->setResolution((new \DateTimeImmutable)->setTimestamp(\mt_rand($identification->getTimestamp(), $identification->add(\DateInterval::createFromDateString('1 months'))->getTimestamp())))
+                ->setProbability(ProbabilityEnum::random())
+                ->setSeverity(SeverityEnum::random())
+                ->setProject($this->getReference(ProjectFixtures::REFERENCE . \rand(1, ProjectFixtures::NUMBER_ELEMENT)))
+            ;
         }, self::REFERENCE);
     }
 
     public function getDependencies(): array
     {
         return [
-            ProbabilityFixtures::class,
-            SeverityFixtures::class
+            ProjectFixtures::class
         ];
     }
 }

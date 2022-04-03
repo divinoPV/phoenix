@@ -1,0 +1,77 @@
+.x-color {
+  &--font {
+    &__done {
+      color: #24e30d;
+    }
+
+    &__feedback {
+      color: #DD6031;
+    }
+
+    &__need_review {
+      color: #debf14;
+    }
+
+    &__pending {
+      color: #e5941b;
+    }
+
+    &__start {
+      color: #700548;
+    }
+
+    &__tested {
+      color: #8E518D;
+    }
+
+    &__to_test {
+      color: #C86FC9;
+    }
+
+    &__todo {
+      color: #0A81D1;
+    }
+
+    &__under_testing {
+      color: #7272AB;
+    }
+  }
+
+  &--background {
+    &__done {
+      background-color: #24e30d;
+    }
+
+    &__feedback {
+      background-color: #DD6031;
+    }
+
+    &__need_review {
+      background-color: #debf14;
+    }
+
+    &__pending {
+      background-color: #e5941b;
+    }
+
+    &__start {
+      background-color: #700548;
+    }
+
+    &__tested {
+      background-color: #8E518D;
+    }
+
+    &__to_test {
+      background-color: #C86FC9;
+    }
+
+    &__todo {
+      background-color: #0A81D1;
+    }
+
+    &__under_testing {
+      background-color: #7272AB;
+    }
+  }
+}

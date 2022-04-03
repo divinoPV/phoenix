@@ -3,19 +3,22 @@
 namespace App\DataFixtures;
 
 use App\Entity\Status;
-use App\Enum\StatusEnum;
 use Doctrine\Persistence\ObjectManager;
 
 final class StatusFixtures extends BaseFixture
 {
-    public const REFERENCE = 'status_';
+    public const REFERENCE = 'status';
+
+    public const NUMBER_ELEMENT = 5;
 
     public function generate(ObjectManager $manager): void
     {
-        $this->createFromArray(Status::class, StatusEnum::cases(), function (Status $status, string $projectStatus, int $key) {
-            $status->setLabel($projectStatus)
-                ->setColor($this->faker->hexColor())
-                ->setPlacement($key + 1);
+        $this->create(Status::class, self::NUMBER_ELEMENT, function (Status $status, int $i) {
+            $status
+                ->setName($this->faker->word)
+                ->setColor($this->faker->hexColor)
+                ->setPlacement($i)
+            ;
         }, self::REFERENCE);
     }
 }

@@ -1,0 +1,25 @@
+.o-archiveLeading {
+  margin: 21px 89px 34px;
+
+  &__btn {
+    gap: 21px;
+
+    a {
+      background-color: $blue-sapphire;
+      border-radius: 21px;
+      color: $white;
+      gap: 5px;
+      padding: 8px 16px;
+      text-decoration: none;
+
+      svg {
+        fill: $white;
+      }
+    }
+
+    &, a {
+      align-items: center;
+      display: flex;
+    }
+  }
+}

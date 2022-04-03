@@ -28,7 +28,7 @@ abstract class BaseFixture extends Fixture
         string|bool $reference = false
     ): void {
         foreach (range(1, $count) as $i) {
-            $callback($object = new $class(), $i);
+            $callback($object = new $class, $i);
             $this->manager->persist($object);
             $reference && $this->addReference($reference.$i, $object);
         }
@@ -42,7 +42,7 @@ abstract class BaseFixture extends Fixture
         string|bool $reference = false
     ): void {
         foreach ($array as $key => $element) {
-            $callback($object = new $class(), $element->value, $key);
+            $callback($object = new $class, $element->value, $key);
             $this->manager->persist($object);
             $reference && $this->addReference($reference.$key, $object);
         }

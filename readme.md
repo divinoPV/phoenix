@@ -14,6 +14,17 @@ Execute commands in your favorite terminal :
 5. Start project `make start`
 6. Go to [http://phoenix.co](http://phoenix.co) in your favorite web browser
 
+## Fixtures
+### Users and database
+| Role                 | Email                                 | Password |
+|:---------------------|:--------------------------------------|:---------|
+| admin                | admin{1;4}@phoenix.co                 | xxx      |
+| responsible_project  | responsible_project{1;7}@phoenix.co   | xxx      |
+| responsible_customer | responsible_customer{1;15}@phoenix.co | xxx      |
+| member_project       | member_project{1;24}@phoenix.co       | xxx      |
+| member_customer      | member_customer{1;35}@phoenix.co      | xxx      |
+| database             | root                                  | root     |
+
 ## Support
 
 You can email [divino][email] if you have any questions.

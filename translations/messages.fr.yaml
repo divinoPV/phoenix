@@ -1,0 +1,242 @@
+# Common
+common.title: Phoenix
+common.logo: Logo du site
+common.new: Nouveau
+common.edit: Modifier
+common.delete: Supprimer
+common.back: Retour
+common.welcome: Bienvenue
+
+# Flashes
+flash.form.valid: Le formulaire est valide
+flash.form.invalid: Le formulaire contient des erreurs
+flash.form.delete.success: L'élément a été supprimé
+flash.form.delete.error: Une erreur est survenue lors de la suppression de l'élément
+flash.form.catch_error: Erreur lors de la validation du formulaire, contactez l'administrateur
+
+# Nav
+nav.dashboard: Tableau de bord
+nav.projects: Projets
+nav.admin: Administration
+nav.logout: Déconnexion
+nav.login: Connexion
+nav.register: Inscription
+
+# Securities
+# Security - Login
+security.login.title: Connexion
+security.login.submit: Se connecter
+security.login.sign_up: S'inscrire
+
+# Security - Registration
+security.registration.title: Inscription
+security.registration.submit: S'inscrire
+
+# Views
+## View - Dashboard
+dashboard.title: Tableau de bord
+dashboard.title.user: de
+dashboard.personal.title: Mes projets
+dashboard.personal.info: Tous vos projets qu'ils soient archivés ou non.
+dashboard.personal.no_project: Vous n'avez pas encore de projet.
+dashboard.team.title: Projets de mon équipe
+dashboard.team.info: Tous les projets de votre équipe qu'ils soient archivés ou non.
+dashboard.team.no_project: Votre équipe n'a pas encore de projet.
+dashboard.risky.title: Projets risqués
+dashboard.risky.info: Tous les projets risqués non archivés uniquement.
+dashboard.risky.no_project: Il n'y a aucun projet risqué.
+dashboard.fact.title: Projets avec des faits
+dashboard.fact.info: Tous les projets avec des faits non archivés uniquement.
+dashboard.fact.no_project: Il n'y a aucun projet avec des faits.
+
+## View - Project
+project.title: Projets
+project.no_project: Il n'y a pas encore de projet
+
+## View - Project - List
+project.list.code: Code
+project.list.name: Nom
+project.list.teamProject.responsible.full_name: CP
+project.list.teamProject.name: Équipe projet
+project.list.teamCustomer.responsible.full_name: CP client
+project.list.teamCustomer.name: Client
+project.list.status: Statut
+project.list.original: Initial
+project.list.consumed: Consommé
+project.list.remaining: Reste à faire
+project.list.landing: Atterissage
+project.list.startedAt: Commencé
+project.list.endedAt: Terminé
+project.list.archived: Archivé
+project.list.updatedAt: Mis à jour
+
+## View - Project - Show
+project.show.code: 'Code :'
+project.show.status: 'Statut :'
+project.show.archived.true: Archivé
+project.show.archived.false: Actif
+project.show.startedAt: À commencé le
+project.show.endedAt: et fini le
+project.show.description: Description
+project.show.budget: Budget
+project.show.original: 'Initial :'
+project.show.consumed: 'Consommé :'
+project.show.remaining: 'Reste à faire :'
+project.show.landing: 'Atterrissage :'
+project.show.portfolio: Portefeuille
+project.show.portfolio.name: 'Nom :'
+project.show.portfolio.responsible.full_name: 'Responsable :'
+project.show.teamProject: Équipe projet
+project.show.teamProject.name: 'Nom :'
+project.show.teamProject.responsible.full_name: 'CP :'
+project.show.teamCustomer: Client
+project.show.teamCustomer.name: 'Nom :'
+project.show.teamCustomer.responsible.full_name: 'CP client :'
+project.show.risk.identification: Identifier le
+project.show.risk.resolution: Résolue le
+project.show.probability: 'Probabilité :'
+project.show.severity: 'Sévérité :'
+project.show.createdAt: Créé le
+project.show.updatedAt: Mis à jour le
+project.show.createdBy: par
+project.show.updatedBy: par
+project.show.legend: Légende
+project.show.back: Retour aux projets
+
+## View - Project - Add
+project.add.title: Nouveau projet
+
+## View - Project - Edit
+project.edit.title: Modifier le projet
+
+## View - Admin
+admin.title: Administration
+
+## View - Admin - User
+admin.user.title: Administration des utilisateurs
+
+## View - Admin - User - List
+admin.user.list.title: Liste des utilisateurs
+admin.user.list.type.none: Aucun
+admin.user.list.team.none: Aucune
+
+## View - Admin - User - Add
+admin.user.add.title: Ajouter un utilisateur
+
+## View - Admin - User - Edit
+admin.user.edit.title: Editer un utilisateur
+
+# Entities
+## Entity - User
+user.email: Email
+user.password: Mot de passe
+user.first_name: Prénom
+user.last_name: Nom
+user.user_name: Nom d'utilisateur
+user.type: Type de membre
+user.role: Rôles
+user.team: Équipe
+user.submit: Envoyer
+
+## Entity - Project
+project.name: Nom
+project.description: Description
+project.code: Code
+project.started_at: Commencé le
+project.ended_at: Terminé le
+project.status: Statut
+project.portfolio: Portefeuille
+project.team_project: Équipe projet
+project.team_customer: Client
+project.archived: Archivé
+
+## Entity - Budget
+budget.original: Initial
+budget.consumed: Consommé
+budget.remaining: Reste à faire
+budget.landing: Atterrissage
+
+# Enums
+## Enum - Role
+enum:
+    ROLE_ADMIN:
+        label: Administrateur
+    ROLE_USER:
+        label: Utilisateur
+    ROLE_MEMBER:
+        label: Membre
+    ROLE_RESPONSIBLE:
+        label: Responsable
+
+## Enum - Milestone
+enum.milestone:
+    conception_start:
+        label: Début de la conception
+    conception_end:
+        label: Fin de la conception
+    development_start:
+        label: Début du développement
+    development_end:
+        label: Fin du développement
+    preproduction_delivery:
+        label: Livraison en préproduction
+    production_delivery:
+        label: Début de la recette
+    recipe_start:
+        label: Fin de la recette
+    recipe_end:
+        label: Livraison en production
+
+## Enum - Severity
+enum.severity:
+    blocker:
+        label: Bloquer
+    critical:
+        label: Critique
+    high:
+        label: Haut
+    info:
+        label: Information
+    low:
+        label: Bas
+    major:
+        label: Majeur
+    medium:
+        label: Moyen
+    minor:
+        label: Mineur
+
+## Enum - Probability
+enum.probability:
+    above_mid:
+        label: Au dessus de la moyenne
+    always:
+        label: Toujours
+    below_mid:
+        label: En dessus de la moyenne
+    high:
+        label: Élevé
+    low:
+        label: Faible
+    mid:
+        label: Moyen
+    never:
+        label: Jamais
+    very_high:
+        label: Très élevé
+    very_low:
+        label: Très faible
+
+## Enum - Member type
+enum.member_type:
+    project:
+        label: Projet
+    customer:
+        label: Client
+
+## Enum - Team type
+enum.team_type:
+    project:
+        label: Projet
+    customer:
+        label: Client

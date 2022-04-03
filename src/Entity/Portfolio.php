@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PortfolioRepository;
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,21 +12,20 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: PortfolioRepository::class)]
 class Portfolio
 {
-    use UuidableTrait;
+    use Uuidable;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
-    #[ORM\ManyToOne(targetEntity: Responsible::class, inversedBy: 'portfolios')]
-    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?Responsible $responsible;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'portfolios')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $responsible;
 
-    #[ORM\OneToMany(mappedBy: 'portfolio', targetEntity: Project::class)]
-    private ?Collection $projects;
-
-    #[Pure] public function __construct()
-    {
-        $this->projects = new ArrayCollection();
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'portfolio', targetEntity: Project::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+        private ?Collection $projects = new ArrayCollection
+    ) {
     }
 
     public function getName(): ?string
@@ -34,19 +33,19 @@ class Portfolio
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getResponsible(): ?Responsible
+    public function getResponsible(): ?User
     {
         return $this->responsible;
     }
 
-    public function setResponsible(?Responsible $responsible): self
+    public function setResponsible(?User $responsible): static
     {
         $this->responsible = $responsible;
 
@@ -58,7 +57,7 @@ class Portfolio
         return $this->projects;
     }
 
-    public function addProject(Project $project): self
+    public function addProject(Project $project): static
     {
         if (!$this->projects->contains($project)) {
             $this->projects[] = $project;
@@ -68,7 +67,7 @@ class Portfolio
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeProject(Project $project): static
     {
         if ($this->projects->removeElement($project)) {
             if ($project->getPortfolio() === $this) {

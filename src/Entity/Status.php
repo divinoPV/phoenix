@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
+use App\Beable\Entity\Uuidable;
 use App\Repository\StatusRepository;
-use App\Traits\Entity\UuidableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,33 +14,31 @@ use Knp\DoctrineBehaviors\Model\Sluggable\SluggableTrait;
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
 class Status implements SluggableInterface
 {
-    use UuidableTrait, SluggableTrait;
+    use Uuidable, SluggableTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $label;
+    private ?string $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 7)]
     private ?string $color;
 
     #[ORM\Column(type: 'integer')]
     private ?int $placement;
 
-    #[ORM\OneToMany(mappedBy: 'status', targetEntity: Project::class)]
-    private ?Collection $projects;
-
-    #[Pure] public function __construct()
-    {
-        $this->projects = new ArrayCollection();
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'status', targetEntity: Project::class)]
+        private ?Collection $projects = new ArrayCollection
+    ) {
     }
 
-    public function getLabel(): ?string
+    public function getName(): ?string
     {
-        return $this->label;
+        return $this->name;
     }
 
-    public function setLabel(string $label): self
+    public function setName(string $name): static
     {
-        $this->label = $label;
+        $this->name = $name;
 
         return $this;
     }
@@ -50,7 +48,7 @@ class Status implements SluggableInterface
         return $this->color;
     }
 
-    public function setColor(string $color): self
+    public function setColor(string $color): static
     {
         $this->color = $color;
 
@@ -62,7 +60,7 @@ class Status implements SluggableInterface
         return $this->placement;
     }
 
-    public function setPlacement(int $placement): self
+    public function setPlacement(int $placement): static
     {
         $this->placement = $placement;
 
@@ -74,19 +72,9 @@ class Status implements SluggableInterface
         return $this->slug;
     }
 
-    public function getProjects(): Collection
+    public function setSlug(string $slug): void
     {
-        return $this->projects;
-    }
-
-    public function addProject(Project $project): self
-    {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->setStatus($this);
-        }
-
-        return $this;
+        $this->slug = $slug;
     }
 
     public function getSluggableFields(): array

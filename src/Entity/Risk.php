@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enum\ProbabilityEnum;
+use App\Enum\SeverityEnum;
 use App\Repository\RiskRepository;
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +14,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: RiskRepository::class)]
 class Risk
 {
-    use UuidableTrait;
+    use Uuidable;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
@@ -23,28 +25,22 @@ class Risk
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $resolution;
 
-    #[ORM\ManyToOne(targetEntity: Probability::class, inversedBy: 'risks')]
+    #[ORM\Column(type:'string', enumType: ProbabilityEnum::class)]
+    private ?ProbabilityEnum $probability;
+
+    #[ORM\Column(type:'string', enumType: SeverityEnum::class)]
+    private ?SeverityEnum $severity;
+
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'risks')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?Probability $probability;
-
-    #[ORM\ManyToOne(targetEntity: Severity::class, inversedBy: 'risks')]
-    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
-    private ?Severity $severity;
-
-    #[ORM\OneToMany(mappedBy: 'risk', targetEntity: ProjectRisk::class)]
-    private ?Collection $projectRisks;
-
-    #[Pure] public function __construct()
-    {
-        $this->projectRisks = new ArrayCollection();
-    }
+    private ?Project $project;
 
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -56,7 +52,7 @@ class Risk
         return $this->identification;
     }
 
-    public function setIdentification(\DateTimeImmutable $identification): self
+    public function setIdentification(\DateTimeImmutable $identification): static
     {
         $this->identification = $identification;
 
@@ -68,59 +64,45 @@ class Risk
         return $this->resolution;
     }
 
-    public function setResolution(\DateTimeImmutable $resolution): self
+    public function setResolution(\DateTimeImmutable $resolution): static
     {
         $this->resolution = $resolution;
 
         return $this;
     }
 
-    public function getProbability(): ?Probability
+    public function getProbability(): ?ProbabilityEnum
     {
         return $this->probability;
     }
 
-    public function setProbability(?Probability $probability): self
+    public function setProbability(?ProbabilityEnum $probability): static
     {
         $this->probability = $probability;
 
         return $this;
     }
 
-    public function getSeverity(): ?Severity
+    public function getSeverity(): ?SeverityEnum
     {
         return $this->severity;
     }
 
-    public function setSeverity(?Severity $severity): self
+    public function setSeverity(?SeverityEnum $severity): static
     {
         $this->severity = $severity;
 
         return $this;
     }
 
-    public function getProjectRisks(): Collection
+    public function getProject(): ?Project
     {
-        return $this->projectRisks;
+        return $this->project;
     }
 
-    public function addProjectRisk(ProjectRisk $projectRisk): self
+    public function setProject(?Project $project): static
     {
-        if (!$this->projectRisks->contains($projectRisk)) {
-            $this->projectRisks[] = $projectRisk;
-            $projectRisk->setRisk($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProjectRisk(ProjectRisk $projectRisk): self
-    {
-        if ($this->projectRisks->removeElement($projectRisk)) {
-            if ($projectRisk->getRisk() === $this) {
-                $projectRisk->setRisk(null);
-            }
-        }
+        $this->project = $project;
 
         return $this;
     }

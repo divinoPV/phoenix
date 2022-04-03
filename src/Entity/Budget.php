@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BudgetRepository;
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: BudgetRepository::class)]
 class Budget
 {
-    use UuidableTrait;
+    use Uuidable;
 
     #[ORM\Column(type: 'integer')]
     private ?int $original;
@@ -26,12 +26,10 @@ class Budget
     #[ORM\Column(type: 'integer')]
     private ?int $landing;
 
-    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Project::class)]
-    private ?Collection $projects;
-
-    #[Pure] public function __construct()
-    {
-        $this->projects = new ArrayCollection();
+    #[Pure] public function __construct(
+        #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Project::class)]
+        private ?Collection $projects = new ArrayCollection
+    ) {
     }
 
     public function getOriginal(): ?int
@@ -39,7 +37,7 @@ class Budget
         return $this->original;
     }
 
-    public function setOriginal(int $original): self
+    public function setOriginal(int $original): static
     {
         $this->original = $original;
 
@@ -51,7 +49,7 @@ class Budget
         return $this->consumed;
     }
 
-    public function setConsumed(int $consumed): self
+    public function setConsumed(int $consumed): static
     {
         $this->consumed = $consumed;
 
@@ -63,7 +61,7 @@ class Budget
         return $this->remaining;
     }
 
-    public function setRemaining(int $remaining): self
+    public function setRemaining(int $remaining): static
     {
         $this->remaining = $remaining;
 
@@ -75,7 +73,7 @@ class Budget
         return $this->landing;
     }
 
-    public function setLanding(int $landing): self
+    public function setLanding(int $landing): static
     {
         $this->landing = $landing;
 
@@ -87,7 +85,7 @@ class Budget
         return $this->projects;
     }
 
-    public function addProject(Project $project): self
+    public function addProject(Project $project): static
     {
         if (!$this->projects->contains($project)) {
             $this->projects[] = $project;
@@ -97,7 +95,7 @@ class Budget
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeProject(Project $project): static
     {
         if ($this->projects->removeElement($project)) {
             if ($project->getBudget() === $this) {

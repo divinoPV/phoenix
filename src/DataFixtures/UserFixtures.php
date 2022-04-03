@@ -3,19 +3,28 @@
 namespace App\DataFixtures;
 
 use App\Enum\MemberTypeEnum;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use App\Entity\{Member, Responsible};
-use App\Enum\RoleUserEnum;
+use App\Entity\User;
+use App\Enum\UserRoleEnum;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final class UserFixtures extends BaseFixture implements DependentFixtureInterface
+final class UserFixtures extends BaseFixture
 {
-    public const REFERENCE_RESPONSIBLE = 'responsible_';
+    public const REFERENCE = [
+        'responsible_project' => 'responsible_project_',
+        'responsible_customer' => 'responsible_customer_',
+        'member_project' => 'member_project_',
+        'member_customer' => 'member_customer_',
+        'admin' => 'admin_'
+    ];
 
-    public const REFERENCE_MEMBER = 'member_';
-
-    public const NUMBER_ELEMENT = 124;
+    public const NUMBER_ELEMENT = [
+        'responsible_project' => 7,
+        'responsible_customer' => 15,
+        'member_project' => 24,
+        'member_customer' => 35,
+        'admin' => 4
+    ];
 
     public const PASSWORD = 'xxx';
 
@@ -25,32 +34,59 @@ final class UserFixtures extends BaseFixture implements DependentFixtureInterfac
 
     public function generate(ObjectManager $manager): void
     {
-        $this->create(Responsible::class, self::NUMBER_ELEMENT, function (Responsible $responsible) {
-            $responsible
-                ->setEmail($this->faker->email())
-                ->setName($this->faker->name())
-                ->setLastname($this->faker->lastName())
-                ->setUsername($this->faker->userName())
-                ->setRoles([RoleUserEnum::cases()[rand(0, count(RoleUserEnum::cases()) - 1)]])
-                ->setPassword($this->passwordHasher->hashPassword($responsible, self::PASSWORD));
-        }, self::REFERENCE_RESPONSIBLE);
+        $this->generateUser(
+            self::NUMBER_ELEMENT['responsible_project'],
+            [UserRoleEnum::User, UserRoleEnum::Responsible],
+            MemberTypeEnum::Project,
+            self::REFERENCE['responsible_project'],
+            'responsible_project'
+        );
 
-        $this->create(Member::class, self::NUMBER_ELEMENT, function (Member $member) {
-            $member
-                ->setEmail($this->faker->email())
-                ->setName($this->faker->name())
-                ->setLastname($this->faker->lastName())
-                ->setUsername($this->faker->userName())
-                ->setRoles([RoleUserEnum::cases()[rand(0, count(RoleUserEnum::cases()) - 1)]])
-                ->setPassword($this->passwordHasher->hashPassword($member, self::PASSWORD))
-                ->setType($this->getReference(MemberTypeFixtures::REFERENCE . rand(0, count(MemberTypeEnum::cases()) - 1)));
-        }, self::REFERENCE_MEMBER);
+        $this->generateUser(
+            self::NUMBER_ELEMENT['responsible_customer'],
+            [UserRoleEnum::User, UserRoleEnum::Responsible],
+            MemberTypeEnum::Customer,
+            self::REFERENCE['responsible_customer'],
+            'responsible_customer'
+        );
+
+        $this->generateUser(
+            self::NUMBER_ELEMENT['member_project'],
+            [UserRoleEnum::User, UserRoleEnum::Member],
+            MemberTypeEnum::Project,
+            self::REFERENCE['member_project'],
+            'member_project'
+        );
+
+        $this->generateUser(
+            self::NUMBER_ELEMENT['member_customer'],
+            [UserRoleEnum::User, UserRoleEnum::Member],
+            MemberTypeEnum::Customer,
+            self::REFERENCE['member_customer'],
+            'member_customer'
+        );
+
+        $this->generateUser(
+            self::NUMBER_ELEMENT['admin'],
+            [UserRoleEnum::Admin],
+            null,
+            self::REFERENCE['admin'],
+            'admin'
+        );
     }
 
-    public function getDependencies(): array
+    public function generateUser(int $count, array $roles, ?MemberTypeEnum $type, string $reference, string $email): void
     {
-        return [
-            MemberTypeFixtures::class
-        ];
+        $this->create(User::class, $count, function (User $user, int $i) use ($roles, $type, $email) {
+            $user
+                ->setEmail($email.$i.'@phoenix.co')
+                ->setFirstName($this->faker->name())
+                ->setLastName($this->faker->lastName())
+                ->setUserName($this->faker->userName())
+                ->setPassword($this->passwordHasher->hashPassword($user, self::PASSWORD))
+                ->setRoles($roles)
+                ->setType($type)
+            ;
+        }, $reference);
     }
 }

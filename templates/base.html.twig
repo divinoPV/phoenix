@@ -2,21 +2,28 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock title %}</title>
+        <title>{{ 'common.title'|trans }} - {% block title %}Welcome!{% endblock title %}</title>
         <meta name="descripion" content="{% block description %}{% endblock description %}">
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <link rel="icon" href="{{ asset('ressources/medias/images/phoenix-icon.png') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" integrity="sha256-5veQuRbWaECuYxwap/IOE/DAwNxgm4ikX7nrgsqYp88=" crossorigin="anonymous">
+        {{ encore_entry_link_tags('app') }}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
         {% endblock stylesheets %}
     </head>
     <body>
-        {% block body %}
-            <header>{% block header %}{% endblock header %}</header>
-            <main>{% block main %}{% endblock main %}</main>
-            <footer>{% block footer %}{% endblock footer %}</footer>
-        {% endblock body %}
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock javascripts %}
+        <header class="o-header">
+            {% block header %}
+                {% include 'layouts/_header.html.twig' %}
+            {% endblock header %}
+        </header>
+        <main>
+            {% block main %}{% endblock main %}
+        </main>
+        <footer>
+            {% block footer %}{% endblock footer %}
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js" integrity="sha256-YicH/8aE660iEnJtgll3vT54dJApy3XkYmqNfGVFEzA=" crossorigin="anonymous"></script>
+        {{ encore_entry_script_tags('app') }}
+        {% block javascripts %}{% endblock javascripts %}
     </body>
 </html>

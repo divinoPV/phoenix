@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'security.registration.title'|trans }}{% endblock title %}
+
+{% block main %}
+    <section class="container my-3">
+        <div class="row">
+            <div class="col">
+                <h1 class="mb-3">{{ 'security.registration.title'|trans }}</h1>
+                {{ form(form) }}
+            </div>
+        </div>
+    </section>
+{% endblock main %}

@@ -1,0 +1,25 @@
+.c-dashboard {
+  margin: 0 89px -34px;
+
+  &__myProjects,
+  &__teamProjects,
+  &__riskyProjects,
+  &__factProjects
+  {
+    margin-bottom: 34px;
+
+    &__info {
+      color: lighten($black, 50%);
+      margin-bottom: 13px;
+    }
+
+    &__title {
+      font-size: 1.6rem;
+      margin-bottom: 5px;
+    }
+
+    &__title, &__info {
+      display: block;
+    }
+  }
+}
