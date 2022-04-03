@@ -44,7 +44,7 @@ class Project implements TimestampableInterface, BlameableInterface
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?Portfolio $portfolio;
 
-    #[ORM\ManyToOne(targetEntity: Budget::class, inversedBy: 'projects')]
+    #[ORM\ManyToOne(targetEntity: Budget::class, cascade: ['persist'], inversedBy: 'projects')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private ?Budget $budget;
 
@@ -57,9 +57,9 @@ class Project implements TimestampableInterface, BlameableInterface
     private ?Team $teamCustomer;
 
     #[Pure] public function __construct(
-        #[ORM\OneToMany(mappedBy: 'project', targetEntity: Risk::class)]
+        #[ORM\OneToMany(mappedBy: 'project', targetEntity: Risk::class, cascade: ['persist', 'remove'])]
         private ?Collection $risks = new ArrayCollection,
-        #[ORM\OneToMany(mappedBy: 'project', targetEntity: Fact::class)]
+        #[ORM\OneToMany(mappedBy: 'project', targetEntity: Fact::class, cascade: ['persist', 'remove'])]
         private ?Collection $facts = new ArrayCollection
     ) {
     }

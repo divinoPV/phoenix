@@ -1,14 +1,12 @@
 {% extends 'app/app.html.twig' %}
 
-{% block title %}Projets{% endblock %}
+{% block title %}{{ 'project.title'|trans }}{% endblock %}
 
 {% block main %}
-    <h1 class="o-title">{{ 'project.title'|trans }}</h1>
+    <h1 class="o-title">{{ 'project.title'|trans }} - ({{ projects|length }})</h1>
     {% include 'app/common/_archive_leading.html.twig' with {
         path_add: path('project_add'),
-        label_add: 'Ajouter un projet',
-        path_export: path('projects_export'),
-        label_export: 'Exporter les projets',
+        label_add: 'Ajouter un projet'
     } only %}
     {% if projects is not null %}
         {% set projectList = 'c-projectList' %}
@@ -40,7 +38,7 @@
                     <span class="{{ projectListItem }}__teamProjectName">{{ project.teamProject.name }}</span>
                     <span class="{{ projectListItem }}__teamCustomerResponsibleFullName">{{ project.teamCustomer.responsible.fullName }}</span>
                     <span class="{{ projectListItem }}__teamCustomerName">{{ project.teamCustomer.name }}</span>
-                    <span class="{{ projectListItem }}__status x-color--background__{{ project.status.color }} o-btn">{{ project.status.label|trans }}</span>
+                    <span class="{{ projectListItem }}__status x-color--background__{{ project.status.color }} o-btn--noHover">{{ project.status.label|trans }}</span>
                     <span class="{{ projectListItem }}__original">{{ project.budget.original }} €</span>
                     <span class="{{ projectListItem }}__consumed">{{ project.budget.consumed }} €</span>
                     <span class="{{ projectListItem }}__remaining">{{ project.budget.remaining }} €</span>

@@ -2,9 +2,16 @@
 common.title: Phoenix
 common.logo: Logo du site
 common.new: Nouveau
+common.edit: Modifier
+common.delete: Supprimer
 common.back: Retour
-common.export: Exporter
-common.export.globale: Export global
+
+# Flashes
+flash.form.valid: Le formulaire est valide
+flash.form.invalid: Le formulaire contient des erreurs
+flash.form.delete.success: L'élément a été supprimé
+flash.form.delete.error: Une erreur est survenue lors de la suppression de l'élément
+flash.form.catch_error: Erreur lors de la validation du formulaire, contactez l'administrateur
 
 # Nav
 nav.dashboard: Tableau de bord
@@ -64,6 +71,12 @@ project.show.updatedAt: Mis à jour le
 project.show.createdBy: par
 project.show.updatedBy: par
 project.show.legend: Légende
+
+### View - Project - Add
+project.add.title: Nouveau projet
+
+### View - Project - Edit
+project.edit.title: Modifier le projet
 
 # Enums
 ## Enum - Status

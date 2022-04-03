@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Phoenix - {% block title %}Welcome!{% endblock title %}</title>
+        <title>{{ 'common.title'|trans }} - {% block title %}Welcome!{% endblock title %}</title>
         <meta name="descripion" content="{% block description %}{% endblock description %}">
         <link rel="icon" href="{{ asset('ressources/medias/images/phoenix-icon.png') }}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" integrity="sha256-5veQuRbWaECuYxwap/IOE/DAwNxgm4ikX7nrgsqYp88=" crossorigin="anonymous">

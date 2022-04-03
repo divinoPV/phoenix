@@ -10,7 +10,7 @@ final class PortfolioFixtures extends BaseFixture implements DependentFixtureInt
 {
     public const REFERENCE = 'portfolio_';
 
-    public const NUMBER_ELEMENT = ProjectFixtures::NUMBER_ELEMENT;
+    public const NUMBER_ELEMENT = 21;
 
     protected function generate(ObjectManager $manager): void
     {

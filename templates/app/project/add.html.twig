@@ -1,0 +1,13 @@
+{% extends 'app/app.html.twig' %}
+
+{% block title %}{{ 'project.add.title'|trans }}{% endblock %}
+
+{% block main %}
+    <div class="x-margin">
+        {% include 'app/common/button/_back.html.twig' with {path_back: path('projects')} only %}
+    </div>
+    <div class="o-container">
+        <h1 class="o-title x-noMargin">{{ 'project.add.title'|trans }}</h1>
+        {{ form(form) }}
+    </div>
+{% endblock main %}
