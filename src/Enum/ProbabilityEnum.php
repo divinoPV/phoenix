@@ -2,15 +2,19 @@
 
 namespace App\Enum;
 
+use App\Beable\Enum\Trumpable;
+
 enum ProbabilityEnum: string
 {
-    case AboveMid = 'enum.probability.above_mid';
-    case Always = 'enum.probability.always';
-    case BelowMid = 'enum.probability.below_mid';
-    case High = 'enum.probability.high';
-    case Low = 'enum.probability.low';
-    case Mid = 'enum.probability.mid';
-    case Never = 'enum.probability.never';
-    case VeryHigh = 'enum.probability.very_high';
-    case VeryLow = 'enum.probability.very_low';
+    use Trumpable;
+
+    case AboveMid = 'probability.above_mid';
+    case Always = 'probability.always';
+    case BelowMid = 'probability.below_mid';
+    case High = 'probability.high';
+    case Low = 'probability.low';
+    case Mid = 'probability.mid';
+    case Never = 'probability.never';
+    case VeryHigh = 'probability.very_high';
+    case VeryLow = 'probability.very_low';
 }

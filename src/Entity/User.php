@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Traits\Entity\UuidableTrait;
+use App\Beable\Entity\Uuidable;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
@@ -13,19 +13,24 @@ abstract class User implements UserInterface,
                                PasswordAuthenticatedUserInterface,
                                TimestampableInterface
 {
-    use UuidableTrait, TimestampableTrait;
+    use TimestampableTrait;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name;
+    private ?string $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $lastname;
+    private ?string $lastName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $username;
+    private ?string $userName;
 
     #[ORM\Column(type: 'json')]
     private ?array $roles = [];
@@ -33,50 +38,55 @@ abstract class User implements UserInterface,
     #[ORM\Column(type: 'string')]
     private ?string $password;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->name;
+        return $this->firstName;
     }
 
-    public function setName(string $name): self
+    public function setFirstName(string $firstName): static
     {
-        $this->name = $name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastName(): ?string
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
-    public function setLastname(string $lastname): self
+    public function setLastName(string $lastName): static
     {
-        $this->lastname = $lastname;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getUsername(): ?string
+    public function getUserName(): ?string
     {
-        return $this->username;
+        return $this->userName;
     }
 
-    public function setUsername(string $username): self
+    public function setUserName(string $userName): static
     {
-        $this->username = $username;
+        $this->userName = $userName;
 
         return $this;
     }
@@ -103,7 +113,7 @@ abstract class User implements UserInterface,
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): static
     {
         $this->roles = $roles;
 
@@ -118,7 +128,7 @@ abstract class User implements UserInterface,
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): static
     {
         $this->password = $password;
 
@@ -132,5 +142,10 @@ abstract class User implements UserInterface,
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 }

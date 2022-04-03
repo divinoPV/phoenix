@@ -1,0 +1,68 @@
+.c-projectShow {
+  box-shadow: -2px -2px 10px 5px darken($white, 10%);
+  display: grid;
+  grid-gap: 21px 89px;
+  grid-template:
+          'leading content'
+          'legend legend'
+          'calendar calendar'
+          / 60% 1fr;
+  ;
+  padding: 34px 55px;
+
+  &__calendar {
+    grid-area: calendar;
+    height: 1200px;
+  }
+
+  &__content {
+    grid-area: content;
+    margin-bottom: 34px;
+
+    &__budget, &__portfolio, &__teamProject, &__teamCustomer {
+      margin-bottom: 21px;
+
+      span {
+        display: block;
+      }
+
+      &__values {
+        display: flex;
+        flex-direction: column;
+        margin-left: 34px;
+      }
+    }
+  }
+
+  &__leading {
+    display: flex;
+    flex-direction: column;
+    grid-area: leading;
+
+    &__date {
+      margin-bottom: 13px;
+    }
+
+    &__description {
+      margin-bottom: 21px;
+
+      &__value {
+        margin-left: 34px;
+        overflow-wrap: break-word;
+        text-align: justify;
+        text-align-last: start;
+      }
+    }
+  }
+
+  &__legend {
+    grid-area: legend;
+    margin-bottom: 21px;
+
+    &__container {
+      align-items: center;
+      display: flex;
+      gap: 5px;
+    }
+  }
+}

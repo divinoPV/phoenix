@@ -1,0 +1,56 @@
+{% extends 'app/app.html.twig' %}
+
+{% block title %}{{ 'project.title'|trans }}{% endblock %}
+
+{% block main %}
+    <h1 class="o-title">{{ 'project.title'|trans }} - ({{ projects|length }})</h1>
+    {% include 'app/common/_archive_leading.html.twig' with {
+        path_add: path('project_add'),
+        label_add: 'Ajouter un projet'
+    } only %}
+    {% if projects is not null %}
+        {% set projectList = 'c-projectList' %}
+        <div class="{{ projectList }}">
+            {% set projectListLeading = projectList ~ '__leading' %}
+            <div class="{{ projectListLeading }}">
+                <span class="{{ projectListLeading }}__code">{{ 'project.list.code'|trans }}</span>
+                <strong class="{{ projectListLeading }}__name">{{ 'project.list.name'|trans }}</strong>
+                <span class="{{ projectListLeading }}__teamProjectResponsibleFullName">{{ 'project.list.teamProject.responsible.full_name'|trans }}</span>
+                <span class="{{ projectListLeading }}__teamProjectName">{{ 'project.list.teamProject.name'|trans }}</span>
+                <span class="{{ projectListLeading }}__teamCustomerResponsibleFullName">{{ 'project.list.teamCustomer.responsible.full_name'|trans }}</span>
+                <span class="{{ projectListLeading }}__teamCustomerName">{{ 'project.list.teamCustomer.name'|trans }}</span>
+                <span class="{{ projectListLeading }}__status">{{ 'project.list.status'|trans }}</span>
+                <span class="{{ projectListLeading }}__original">{{ 'project.list.original'|trans }}</span>
+                <span class="{{ projectListLeading }}__consumed">{{ 'project.list.consumed'|trans }}</span>
+                <span class="{{ projectListLeading }}__remaining">{{ 'project.list.remaining'|trans }}</span>
+                <span class="{{ projectListLeading }}__landing">{{ 'project.list.landing'|trans }}</span>
+                <span class="{{ projectListLeading }}__startedAt">{{ 'project.list.startedAt'|trans }}</span>
+                <span class="{{ projectListLeading }}__endedAt">{{ 'project.list.endedAt'|trans }}</span>
+                <span class="{{ projectListLeading }}__archived">{{ 'project.list.archived'|trans }}</span>
+                <span class="{{ projectListLeading }}__updatedAt">{{ 'project.list.updatedAt'|trans }}</span>
+            </div>
+            {% set projectListItem = projectList ~ '__item' %}
+            {% for project in projects %}
+                <a class="{{ projectListItem }}" href="{{ path('project', {'uuid': project.uuid}) }}">
+                    <span class="{{ projectListItem }}__code">{{ project.code }}</span>
+                    <strong class="{{ projectListItem }}__name">{{ project.name }}</strong>
+                    <span class="{{ projectListItem }}__teamProjectResponsibleFullName">{{ project.teamProject.responsible.fullName }}</span>
+                    <span class="{{ projectListItem }}__teamProjectName">{{ project.teamProject.name }}</span>
+                    <span class="{{ projectListItem }}__teamCustomerResponsibleFullName">{{ project.teamCustomer.responsible.fullName }}</span>
+                    <span class="{{ projectListItem }}__teamCustomerName">{{ project.teamCustomer.name }}</span>
+                    <span class="{{ projectListItem }}__status x-color--background__{{ project.status.color }} o-btn--noHover">{{ project.status.label|trans }}</span>
+                    <span class="{{ projectListItem }}__original">{{ project.budget.original }} €</span>
+                    <span class="{{ projectListItem }}__consumed">{{ project.budget.consumed }} €</span>
+                    <span class="{{ projectListItem }}__remaining">{{ project.budget.remaining }} €</span>
+                    <span class="{{ projectListItem }}__landing">{{ project.budget.landing }} €</span>
+                    <span class="{{ projectListItem }}__startedAt">{{ project.startedAt|date('d/m/Y') }}</span>
+                    <span class="{{ projectListItem }}__endedAt">{{ project.endedAt|date('d/m/Y') }}</span>
+                    <span class="{{ projectListItem }}__archived">{{ project.archived }}</span>
+                    <span class="{{ projectListItem }}__updatedAt">{{ project.updatedAt|date('d/m/Y \\à h\\hi') }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <span>{{ 'project.no_project' }}</span>
+    {% endif %}
+{% endblock main %}

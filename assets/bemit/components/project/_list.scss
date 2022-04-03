@@ -1,0 +1,45 @@
+.c-projectList {
+  border-radius: 13px;
+  box-shadow: -2px -2px 10px 5px darken($white, 10%);
+  margin: 21px 89px;
+
+  &__leading {
+    background-color: $blue-sapphire;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+    color: $white;
+  }
+
+  &__item {
+    color: $black;
+    text-decoration: none;
+    transition: all 0.6s ease-in-out;
+
+    &:nth-child(2n) {
+      background-color: darken($white, 5%);
+    }
+
+    &:hover {
+      color: $white;
+      background-color: lighten($blue-sapphire, 10%);
+      transition: all 0.4s ease-in-out;
+    }
+  }
+
+  &__leading, &__item {
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-gap: 21px;
+    padding: 13px 21px;
+    text-align: center;
+
+    * {
+      font-weight: 400;
+    }
+
+    &__code {
+      font-weight: 600;
+    }
+  }
+}
