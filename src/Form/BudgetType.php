@@ -7,15 +7,23 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BudgetType extends AbstractType
+final class BudgetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('original')
-            ->add('consumed')
-            ->add('remaining')
-            ->add('landing')
+            ->add('original', options: [
+                'label' => 'budget.original'
+            ])
+            ->add('consumed', options: [
+                'label' => 'budget.consumed'
+            ])
+            ->add('remaining', options: [
+                'label' => 'budget.remaining'
+            ])
+            ->add('landing', options: [
+                'label' => 'budget.landing'
+            ])
         ;
     }
 

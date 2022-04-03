@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'admin.user.list.title'|trans }}{% endblock title %}
+
+{% block main %}
+    <div class="x-margin">
+        <h1>{{ 'admin.user.list.title'|trans }}</h1>
+        {% if users is not empty %}
+            {% set block = 'c-user__list' %}
+            <div class="{{ block }}">
+                {% set blockLeading = block ~ '__leading' %}
+                <div class="{{ blockLeading }}">
+                    <span class="{{ blockLeading }}__email">{{ 'user.email'|trans }}</span>
+                    <span class="{{ blockLeading }}__firstName">{{ 'user.first_name'|trans }}</span>
+                    <span class="{{ blockLeading }}__lastName">{{ 'user.last_name'|trans }}</span>
+                    <span class="{{ blockLeading }}__userName">{{ 'user.user_name'|trans }}</span>
+                    <span class="{{ blockLeading }}__roles">{{ 'user.roles'|trans }}</span>
+                    <span class="{{ blockLeading }}__type">{{ 'user.type'|trans }}</span>
+                    <span class="{{ blockLeading }}__team">{{ 'user.team'|trans }}</span>
+                </div>
+                {% set blockItem = block ~ '__item' %}
+                {% for user in users %}
+                    <a class="{{ blockItem }}" href="{{ path('admin_user_edit', {'id': user.id}) }}">
+                        <span class="{{ blockItem }}__email">{{ user.email }}</span>
+                        <span class="{{ blockItem }}__firstName">{{ user.firstName }}</span>
+                        <span class="{{ blockItem }}__lastName">{{ user.lastName }}</span>
+                        <span class="{{ blockItem }}__userName">{{ user.userName }}</span>
+                        <span class="{{ blockItem }}__roles">[{% for role in user.roles %}{{ role }} {% endfor %}]</span>
+                        <span class="{{ blockItem }}__type">{{ null != user.type ? user.type.label|trans : 'admin.user.list.type.none'|trans }}</span>
+                        <span class="{{ blockItem }}__team">{{ null != user.team ? user.team.name : 'admin.user.list.team.none'|trans  }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <span class="o-btn--noHover">{{ emptyMessage }}</span>
+        {% endif %}
+    </div>
+{% endblock main %}

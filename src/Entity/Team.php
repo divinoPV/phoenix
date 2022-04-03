@@ -29,13 +29,17 @@ class Team
     private ?TeamTypeEnum $type;
 
     #[Pure] public function __construct(
-        #[ORM\OneToMany(mappedBy: 'teamProject', targetEntity: Project::class)]
+        #[ORM\OneToMany(mappedBy: 'teamProject', targetEntity: Project::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
         private ?Collection $projects = new ArrayCollection,
-        #[ORM\OneToMany(mappedBy: 'teamCustomer', targetEntity: Project::class)]
+        #[ORM\OneToMany(mappedBy: 'teamCustomer', targetEntity: Project::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
         private ?Collection $projectsCustomer = new ArrayCollection,
-        #[ORM\OneToMany(mappedBy: 'team', targetEntity: User::class)]
+        #[ORM\OneToMany(mappedBy: 'team', targetEntity: User::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
         private ?Collection $members = new ArrayCollection,
-        #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+        #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
         private ?Collection $teams = new ArrayCollection
     ) {
     }

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'admin.user.title'|trans }}{% endblock title %}
+
+{% block main %}
+    <div class="x-margin">
+        <h1 class="o-title x-noMargin">{{ 'admin.title'|trans }}</h1>
+        <ul class="mt-2">
+            <li>
+                <a href="{{ path('admin_user_list') }}">Listes</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_user_add') }}">Ajouter</a>
+            </li>
+        </ul>
+    </div>
+{% endblock main %}

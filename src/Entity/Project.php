@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Enum\StatusEnum;
 use App\Repository\ProjectRepository;
 use App\Beable\Entity\Uuidable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,7 +28,7 @@ class Project implements TimestampableInterface, BlameableInterface
     private ?string $code;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $archived = false;
+    private bool $archived;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $startedAt;
@@ -37,8 +36,9 @@ class Project implements TimestampableInterface, BlameableInterface
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $endedAt;
 
-    #[ORM\Column(type:'string', enumType: StatusEnum::class)]
-    private ?StatusEnum $status;
+    #[ORM\ManyToOne(targetEntity: Status::class, inversedBy: 'projects')]
+    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
+    private ?Status $status;
 
     #[ORM\ManyToOne(targetEntity: Portfolio::class, inversedBy: 'projects')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
@@ -100,11 +100,6 @@ class Project implements TimestampableInterface, BlameableInterface
         return $this;
     }
 
-    public function getArchived(): string
-    {
-        return $this->archived ? 'Oui' : 'Non';
-    }
-
     public function hasArchived(): bool
     {
         return $this->archived;
@@ -141,15 +136,13 @@ class Project implements TimestampableInterface, BlameableInterface
         return $this;
     }
 
-    public function getStatus(): ?StatusEnum
+    public function getStatus(): ?Status
     {
         return $this->status;
     }
-
-    public function setStatus(?StatusEnum $status): static
+    public function setStatus(?Status $status): self
     {
         $this->status = $status;
-
         return $this;
     }
 

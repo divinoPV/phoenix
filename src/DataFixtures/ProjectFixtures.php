@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Project;
-use App\Enum\StatusEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -19,7 +18,7 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
             $project
                 ->setName(\implode(' ', $this->faker->words()))
                 ->setDescription(\implode(' ', $this->faker->sentences(\rand(15, 45))))
-                ->setStatus(StatusEnum::random())
+                ->setStatus($this->getReference(StatusFixtures::REFERENCE . \rand(1, StatusFixtures::NUMBER_ELEMENT)))
                 ->setStartedAt($startedAt = new \DateTimeImmutable)
                 ->setEndedAt((new \DateTimeImmutable)->setTimestamp(\mt_rand($startedAt->getTimestamp(), $startedAt->add(\DateInterval::createFromDateString('7 months'))->getTimestamp())))
                 ->setCode($this->faker->word())
@@ -42,7 +41,8 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
             TeamFixtures::class,
             PortfolioFixtures::class,
             BudgetFixtures::class,
-            UserFixtures::class
+            UserFixtures::class,
+            StatusFixtures::class
         ];
     }
 }

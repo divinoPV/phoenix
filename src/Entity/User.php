@@ -15,9 +15,7 @@ use Symfony\Component\Security\Core\User\{PasswordAuthenticatedUserInterface, Us
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements UserInterface,
-                               PasswordAuthenticatedUserInterface,
-                               TimestampableInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableInterface
 {
     use TimestampableTrait;
 
@@ -47,16 +45,16 @@ class User implements UserInterface,
     #[ORM\Column(type: 'string', nullable: true, enumType: MemberTypeEnum::class)]
     private ?MemberTypeEnum $type = null;
 
-    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'members')]
+    #[ORM\ManyToOne(targetEntity: Team::class, cascade: ['persist', 'remove'], inversedBy: 'members')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: true)]
     private ?Team $team = null;
 
     #[Pure] public function __construct(
-        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Portfolio::class)]
-        #[ORM\JoinColumn(nullable: true)]
+        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Portfolio::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
         private ?Collection $portfolios = new ArrayCollection,
-        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Team::class)]
-        #[ORM\JoinColumn(nullable: true)]
+        #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Team::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
         private ?Collection $teams = new ArrayCollection
     ) {
     }
@@ -130,8 +128,6 @@ class User implements UserInterface,
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }

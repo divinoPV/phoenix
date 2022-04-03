@@ -2,8 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Team;
 use App\Entity\User;
 use App\Enum\MemberTypeEnum;
+use App\Enum\UserRoleEnum;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -15,7 +18,7 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class RegistrationFormType extends AbstractType
+final class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -47,22 +50,39 @@ final class RegistrationFormType extends AbstractType
                 'mapped' => false,
             ])
             ->add('firstName', options: [
-                'label' => 'user.first_name',
+                'label' => 'user.first_name'
             ])
             ->add('lastName', options: [
-                'label' => 'user.last_name',
+                'label' => 'user.last_name'
             ])
             ->add('userName', options: [
-                'label' => 'user.user_name',
+                'label' => 'user.user_name'
             ])
+        ;
+
+        if ($options['form_add']) {
+            $builder->add('roles', EnumType::class, [
+                'class' => UserRoleEnum::class,
+                'choice_label' => 'label',
+                'label' => 'user.role',
+                'multiple' => true,
+            ]);
+        }
+
+        $builder
             ->add('type', EnumType::class, [
                 'class' => MemberTypeEnum::class,
                 'choice_label' => 'label',
                 'label' => 'user.type',
                 'required' => true
             ])
+            ->add('team', EntityType::class, [
+                'class' => Team::class,
+                'choice_label' => 'name',
+                'label' => 'user.team',
+            ])
             ->add('submit', SubmitType::class, [
-                'label' => 'security.registration.submit'
+                'label' => 'user.submit'
             ])
         ;
     }
@@ -71,6 +91,7 @@ final class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'form_add' => false,
         ]);
     }
 }

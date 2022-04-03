@@ -27,14 +27,14 @@
                 <span class="{{ blockItem }}__teamProjectName">{{ project.teamProject.name }}</span>
                 <span class="{{ blockItem }}__teamCustomerResponsibleFullName">{{ project.teamCustomer.responsible.fullName }}</span>
                 <span class="{{ blockItem }}__teamCustomerName">{{ project.teamCustomer.name }}</span>
-                <span class="{{ blockItem }}__status x-color--background__{{ project.status.color }} o-btn--noHover">{{ project.status.label|trans }}</span>
+                <span class="{{ blockItem }}__status o-btn--noHover" style="background-color: {{ project.status.color }};">{{ project.status.name }}</span>
                 <span class="{{ blockItem }}__original">{{ project.budget.original }} €</span>
                 <span class="{{ blockItem }}__consumed">{{ project.budget.consumed }} €</span>
                 <span class="{{ blockItem }}__remaining">{{ project.budget.remaining }} €</span>
                 <span class="{{ blockItem }}__landing">{{ project.budget.landing }} €</span>
                 <span class="{{ blockItem }}__startedAt">{{ project.startedAt|date('d/m/Y') }}</span>
                 <span class="{{ blockItem }}__endedAt">{{ project.endedAt|date('d/m/Y') }}</span>
-                <span class="{{ blockItem }}__archived">{{ project.archived }}</span>
+                <span class="{{ blockItem }}__archived">{{ project.archived ? 'Oui' : 'Non' }}</span>
                 <span class="{{ blockItem }}__updatedAt">{{ project.updatedAt|date('d/m/Y \\à h\\hi') }}</span>
             </a>
         {% endfor %}
