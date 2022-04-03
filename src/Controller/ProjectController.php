@@ -6,11 +6,13 @@ use App\Entity\Fact;
 use App\Entity\Project;
 use App\Entity\Risk;
 use App\Enum\CalendarEnum;
+use App\Enum\UserRoleEnum;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,7 +29,7 @@ final class ProjectController extends AbstractController
     public function __invoke(ProjectRepository $projectRepository): Response
     {
         return $this->render('app/project/archive.html.twig', [
-            'projects' => $projectRepository->findAll(),
+            'projects' => $projectRepository->findBy(['archived' => false], ['endedAt' => 'ASC']),
         ]);
     }
 
@@ -101,55 +103,67 @@ final class ProjectController extends AbstractController
     #[Route('/projet/{uuid}/edition', name: 'project_edit')]
     public function edit(Request $request, Project $project): Response
     {
-        $form = $this->createForm(ProjectType::class, $project)->handleRequest($request);
+        if ($this->isGranted(UserRoleEnum::Admin->value) || $this->getUser() === $project->getCreatedBy()) {
+            $form = $this->createForm(ProjectType::class, $project)->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                try {
-                    $this->entityManager->persist($project);
-                    $this->entityManager->flush();
-                    $this->addFlash('success', 'flash.form.valid');
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    try {
+                        $this->entityManager->persist($project);
+                        $this->entityManager->flush();
+                        $this->addFlash('success', 'flash.form.valid');
 
-                    return $this->redirectToRoute('project', [
-                        'uuid' => $project->getUuid(),
-                    ]);
-                } catch (\Exception $e) {
-                    $this->addFlash('danger', 'flash.form.catch.error');
-                    $this->logger->critical('ProjectController - edit', [
-                        'exception' => $e->getMessage(),
-                        'trace' => $e->getTrace(),
-                    ]);
+                        return $this->redirectToRoute('project', [
+                            'uuid' => $project->getUuid(),
+                        ]);
+                    } catch (\Exception $e) {
+                        $this->addFlash('danger', 'flash.form.catch.error');
+                        $this->logger->critical('ProjectController - edit', [
+                            'exception' => $e->getMessage(),
+                            'trace' => $e->getTrace(),
+                        ]);
+                    }
+                } else {
+                    $this->addFlash('error', 'flash.form.invalid');
                 }
-            } else {
-                $this->addFlash('error', 'flash.form.invalid');
             }
-        }
 
-        return $this->renderForm('app/project/edit.html.twig', [
-            'form' => $form,
-            'project' => $project
-        ]);
-    }
-
-    #[Route('/projet/{uuid}/suppression', name: 'project_delete')]
-    public function delete(Project $project): Response
-    {
-        try {
-            $this->entityManager->remove($project);
-            $this->entityManager->flush();
-            $this->addFlash('success', 'flash.form.delete.success');
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'flash.form.delete.error');
-            $this->logger->critical('ProjectController - delete', [
-                'exception' => $e->getMessage(),
-                'trace' => $e->getTrace(),
+            return $this->renderForm('app/project/edit.html.twig', [
+                'form' => $form,
+                'project' => $project
             ]);
-
+        } else {
             return $this->redirectToRoute('project', [
                 'uuid' => $project->getUuid(),
             ]);
         }
+    }
 
-        return $this->redirectToRoute('projects', [], Response::HTTP_SEE_OTHER);
+    #[Route('/projet/{uuid}/suppression', name: 'project_delete')]
+    public function delete(Project $project): RedirectResponse
+    {
+        if ($this->isGranted(UserRoleEnum::Admin->value) || $this->getUser() === $project->getCreatedBy()) {
+            try {
+                $this->entityManager->remove($project);
+                $this->entityManager->flush();
+                $this->addFlash('success', 'flash.form.delete.success');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'flash.form.delete.error');
+                $this->logger->critical('ProjectController - delete', [
+                    'exception' => $e->getMessage(),
+                    'trace' => $e->getTrace(),
+                ]);
+
+                return $this->redirectToRoute('project', [
+                    'uuid' => $project->getUuid(),
+                ]);
+            }
+
+            return $this->redirectToRoute('projects', [], Response::HTTP_SEE_OTHER);
+        } else {
+            return $this->redirectToRoute('project', [
+                'uuid' => $project->getUuid(),
+            ]);
+        }
     }
 }

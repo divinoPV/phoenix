@@ -44,12 +44,12 @@ class User implements UserInterface,
     #[ORM\Column(type: 'string')]
     private ?string $password;
 
+    #[ORM\Column(type: 'string', nullable: true, enumType: MemberTypeEnum::class)]
+    private ?MemberTypeEnum $type = null;
+
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'members')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: true)]
     private ?Team $team = null;
-
-    #[ORM\Column(type: 'string', nullable: true, enumType: MemberTypeEnum::class)]
-    private ?MemberTypeEnum $type = null;
 
     #[Pure] public function __construct(
         #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Portfolio::class)]
@@ -156,18 +156,6 @@ class User implements UserInterface,
         return $this;
     }
 
-    public function getTeam(): ?Team
-    {
-        return $this->team;
-    }
-
-    public function setTeam(?Team $team): static
-    {
-        $this->team = $team;
-
-        return $this;
-    }
-
     public function getType(): ?MemberTypeEnum
     {
         return $this->type;
@@ -176,6 +164,18 @@ class User implements UserInterface,
     public function setType(?MemberTypeEnum $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
 
         return $this;
     }

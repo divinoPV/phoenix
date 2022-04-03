@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Enum\MemberTypeEnum;
+use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,10 +12,20 @@ use Symfony\Component\Routing\Annotation\Route;
 final class DashboardController extends AbstractController
 {
     #[Route(name: 'dashboard')]
-    public function __invoke(): Response
+    public function __invoke(ProjectRepository $repository): Response
     {
-        return $this->render('dashboard/index.html.twig', [
-            'controller_name' => 'DashboardController',
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render('app/dashboard/index.html.twig', [
+            'myProjects' => $repository->findBy(['createdBy' => $this->getUser()], ['endedAt' => 'ASC']),
+            'teamProjects' => $repository->findBy(
+                [$this->getUser()->getType() === MemberTypeEnum::Customer ? 'teamCustomer' : 'teamProject' => $this->getUser()->getTeam()],
+                ['endedAt' => 'ASC']
+            ),
+            'riskyProjects' => array_filter($repository->findBy(['archived' => false], ['endedAt' => 'ASC']), fn ($project) => 0 < $project->getRisks()->count()),
+            'factProjects' => array_filter($repository->findBy(['archived' => false], ['endedAt' => 'ASC']), fn ($project) => 0 < $project->getFacts()->count())
         ]);
     }
 }
