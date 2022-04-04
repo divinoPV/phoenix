@@ -22,7 +22,8 @@ final class TeamFixtures extends BaseFixture implements DependentFixtureInterfac
             $team
                 ->setName(\implode(' ', $this->faker->words()))
                 ->setType(TeamTypeEnum::Project)
-                ->setResponsible($this->getReference(UserFixtures::REFERENCE['responsible_project'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_project'])))
+                ->setResponsible($respnsible = $this->getReference(UserFixtures::REFERENCE['responsible_project'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_project'])))
+                ->setCreatedBy($respnsible)
             ;
         }, self::REFERENCE_PROJECT);
 
@@ -30,7 +31,8 @@ final class TeamFixtures extends BaseFixture implements DependentFixtureInterfac
             $team
                 ->setName(\implode(' ', $this->faker->words()))
                 ->setType(TeamTypeEnum::Customer)
-                ->setResponsible($this->getReference(UserFixtures::REFERENCE['responsible_customer'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_customer'])))
+                ->setResponsible($respnsible = $this->getReference(UserFixtures::REFERENCE['responsible_customer'] . \rand(1, UserFixtures::NUMBER_ELEMENT['responsible_customer'])))
+                ->setCreatedBy($respnsible)
             ;
         }, self::REFERENCE_CUSTOMER);
 

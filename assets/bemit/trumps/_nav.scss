@@ -1,0 +1,24 @@
+.o-header, .o-footer {
+  nav {
+    align-items: center;
+    display: flex;
+    gap: 21px;
+
+    a {
+      align-items: center;
+      display: flex;
+      font-weight: 500;
+      gap: 5px;
+      text-decoration: none;
+
+      &:hover {
+        color: $white;
+        text-decoration: underline;
+      }
+
+      svg {
+        fill: $white;
+      }
+    }
+  }
+}

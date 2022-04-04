@@ -28,8 +28,11 @@ final class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user = new User)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
-            $entityManager->persist($user->setRoles(array_merge($user->getRoles(), [UserRoleEnum::Member->value])));
+            $user
+                ->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()))
+                ->setRoles(array_merge($user->getRoles(), [UserRoleEnum::Member->value]))
+            ;
+            $entityManager->persist($user);
             $entityManager->flush();
 
             return $userAuthenticator->authenticateUser($user, $authenticator, $request);

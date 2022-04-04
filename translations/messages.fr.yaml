@@ -8,19 +8,25 @@ common.back: Retour
 common.welcome: Bienvenue
 
 # Flashes
-flash.form.valid: Le formulaire est valide
-flash.form.invalid: Le formulaire contient des erreurs
-flash.form.delete.success: L'élément a été supprimé
-flash.form.delete.error: Une erreur est survenue lors de la suppression de l'élément
-flash.form.catch_error: Erreur lors de la validation du formulaire, contactez l'administrateur
+flash.form.valid: Soumission du formulaire réussi !
+flash.form.invalid: Le formulaire contient des erreurs, vérifier tous les champs.
+flash.form.delete.success: L'élément a été supprimé avec succès.
+flash.form.delete.error: Une erreur est survenue lors de la suppression de l'élément.
+flash.form.catch.error: Erreur lors de la validation du formulaire, contactez l'administrateur.
 
 # Nav
+## Nav - App
 nav.dashboard: Tableau de bord
 nav.projects: Projets
 nav.admin: Administration
 nav.logout: Déconnexion
 nav.login: Connexion
 nav.register: Inscription
+
+## Nav - Admin
+nav.admin.user: Utilisateurs
+nav.admin.team: Équipes
+nav.admin.status: Statuts
 
 # Securities
 # Security - Login
@@ -51,7 +57,7 @@ dashboard.fact.no_project: Il n'y a aucun projet avec des faits.
 
 ## View - Project
 project.title: Projets
-project.no_project: Il n'y a pas encore de projet
+project.no_project: Il n'y a pas encore de projet.
 
 ## View - Project - List
 project.list.code: Code
@@ -68,7 +74,7 @@ project.list.landing: Atterissage
 project.list.startedAt: Commencé
 project.list.endedAt: Terminé
 project.list.archived: Archivé
-project.list.updatedAt: Mis à jour
+project.list.updatedAt: Mise à jour
 
 ## View - Project - Show
 project.show.code: 'Code :'
@@ -126,6 +132,31 @@ admin.user.add.title: Ajouter un utilisateur
 ## View - Admin - User - Edit
 admin.user.edit.title: Editer un utilisateur
 
+## View - Admin - Team
+admin.team.title: Administration des équipes
+
+## View - Admin - Team - List
+admin.team.list.title: Liste des équipes
+admin.team.list.parent.none: Aucune
+
+## View - Admin - Team - Add
+admin.team.add.title: Ajouter une équipe
+
+## View - Admin - Team - Edit
+admin.team.edit.title: Editer une équipe
+
+## View - Admin - Status
+admin.status.title: Administration des statuts
+
+## View - Admin - Status - List
+admin.status.list.title: Liste des statuts
+
+## View - Admin - Status - Add
+admin.status.add.title: Ajouter un statut
+
+## View - Admin - Status - Edit
+admin.status.edit.title: Editer un statut
+
 # Entities
 ## Entity - User
 user.email: Email
@@ -133,9 +164,10 @@ user.password: Mot de passe
 user.first_name: Prénom
 user.last_name: Nom
 user.user_name: Nom d'utilisateur
-user.type: Type de membre
-user.role: Rôles
+user.type: Type
+user.roles: Rôles
 user.team: Équipe
+user.updated_at: Mis à jour le
 user.submit: Envoyer
 
 ## Entity - Project
@@ -155,6 +187,19 @@ budget.original: Initial
 budget.consumed: Consommé
 budget.remaining: Reste à faire
 budget.landing: Atterrissage
+
+## Entity - Team
+team.name: Nom
+team.type: Type
+team.responsible: Responsable
+team.parent: Équipe parente
+team.updated_at: Mis à jour le
+
+## Entity - Status
+status.name: Nom
+status.color: Couleur
+status.placement: Ordre
+status.updated_at: Mis à jour le
 
 # Enums
 ## Enum - Role

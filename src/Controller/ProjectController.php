@@ -16,16 +16,19 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/projet')]
 final class ProjectController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private TranslatorInterface $translator
     ) {
     }
 
-    #[Route('/projets', name: 'projects')]
+    #[Route('s', name: 'projects')]
     public function __invoke(ProjectRepository $projectRepository): Response
     {
         return $this->render('app/project/archive.html.twig', [
@@ -33,7 +36,7 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/projet/{uuid}', name: 'project')]
+    #[Route('/{uuid}', name: 'project')]
     public function show(string $uuid, ProjectRepository $projectRepository): Response
     {
         $data = [];
@@ -67,7 +70,7 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/projets/nouveau', name: 'project_add')]
+    #[Route('nouveau', name: 'project_add')]
     public function add(Request $request): Response
     {
         $form = $this->createForm(ProjectType::class, $project = new Project)->handleRequest($request);
@@ -75,22 +78,23 @@ final class ProjectController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 try {
+                    $project->getBudget()->setLanding($project->getBudget()->getConsumed() + $project->getBudget()->getRemaining());
                     $this->entityManager->persist($project);
                     $this->entityManager->flush();
-                    $this->addFlash('success', 'flash.form.valid');
+                    $this->addFlash('success', $this->translator->trans('flash.form.valid'));
 
                     return $this->redirectToRoute('project', [
                         'uuid' => $project->getUuid(),
                     ]);
                 } catch (\Exception $e) {
-                    $this->addFlash('danger', 'flash.form.catch.error');
+                    $this->addFlash('danger', $this->translator->trans('flash.form.catch.error'));
                     $this->logger->critical('ProjectController - add', [
                         'exception' => $e->getMessage(),
                         'trace' => $e->getTrace(),
                     ]);
                 }
             } else {
-                $this->addFlash('error', 'flash.form.invalid');
+                $this->addFlash('error', $this->translator->trans('flash.form.invalid'));
             }
         }
 
@@ -100,7 +104,7 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/projet/{uuid}/edition', name: 'project_edit')]
+    #[Route('/{uuid}/edition', name: 'project_edit')]
     public function edit(Request $request, Project $project): Response
     {
         if ($this->isGranted(UserRoleEnum::Admin->value) || $this->getUser() === $project->getCreatedBy()) {
@@ -111,20 +115,20 @@ final class ProjectController extends AbstractController
                     try {
                         $this->entityManager->persist($project);
                         $this->entityManager->flush();
-                        $this->addFlash('success', 'flash.form.valid');
+                        $this->addFlash('success', $this->translator->trans('flash.form.valid'));
 
                         return $this->redirectToRoute('project', [
                             'uuid' => $project->getUuid(),
                         ]);
                     } catch (\Exception $e) {
-                        $this->addFlash('danger', 'flash.form.catch.error');
+                        $this->addFlash('danger', $this->translator->trans('flash.form.catch.error'));
                         $this->logger->critical('ProjectController - edit', [
                             'exception' => $e->getMessage(),
                             'trace' => $e->getTrace(),
                         ]);
                     }
                 } else {
-                    $this->addFlash('error', 'flash.form.invalid');
+                    $this->addFlash('error', $this->translator->trans('flash.form.invalid'));
                 }
             }
 
@@ -139,16 +143,16 @@ final class ProjectController extends AbstractController
         }
     }
 
-    #[Route('/projet/{uuid}/suppression', name: 'project_delete')]
+    #[Route('/{uuid}/suppression', name: 'project_delete')]
     public function delete(Project $project): RedirectResponse
     {
         if ($this->isGranted(UserRoleEnum::Admin->value) || $this->getUser() === $project->getCreatedBy()) {
             try {
                 $this->entityManager->remove($project);
                 $this->entityManager->flush();
-                $this->addFlash('success', 'flash.form.delete.success');
+                $this->addFlash('success', $this->translator->trans('flash.form.delete.success'));
             } catch (\Exception $e) {
-                $this->addFlash('error', 'flash.form.delete.error');
+                $this->addFlash('error', $this->translator->trans('flash.form.delete.error'));
                 $this->logger->critical('ProjectController - delete', [
                     'exception' => $e->getMessage(),
                     'trace' => $e->getTrace(),

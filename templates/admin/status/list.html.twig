@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'admin.status.list.title'|trans }}{% endblock title %}
+
+{% block main %}
+    <div class="x-margin">
+        {% include 'app/common/button/_back.html.twig' with {path_back: path('admin_status')} only %}
+        <h1>{{ 'admin.status.list.title'|trans }}</h1>
+        {% if status is not empty %}
+            {% set block = 'c-status__list' %}
+            <div class="{{ block }}">
+                {% set blockLeading = block ~ '__leading' %}
+                <div class="{{ blockLeading }}">
+                    <span class="{{ blockLeading }}__name">{{ 'status.name'|trans }}</span>
+                    <span class="{{ blockLeading }}__color">{{ 'status.color'|trans }}</span>
+                    <span class="{{ blockLeading }}__parent">{{ 'status.placement'|trans }}</span>
+                    <span class="{{ blockLeading }}__updatedAt">{{ 'status.updated_at'|trans }}</span>
+                </div>
+                {% set blockItem = block ~ '__item' %}
+                {% for status in status %}
+                    <a class="{{ blockItem }}" href="{{ path('admin_status_edit', { 'uuid': status.uuid }) }}">
+                        <span class="{{ blockItem }}__name">{{ status.name }}</span>
+                        <span class="{{ blockItem }}__color o-btn--noHover x-fitContentMiddle" style="background-color: {{ status.color }};">{{ status.color }}</span>
+                        <span class="{{ blockItem }}__placement">{{ status.placement }}</span>
+                        <span class="{{ blockItem }}__updatedAt">{{ status.updatedAt|date('d/m/Y \\à h\\hi') }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <span class="o-btn--noHover">{{ emptyMessage }}</span>
+        {% endif %}
+    </div>
+{% endblock main %}

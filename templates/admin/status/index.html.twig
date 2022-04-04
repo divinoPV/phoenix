@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'admin.user.title'|trans }}{% endblock title %}
+{% block title %}{{ 'admin.status.title'|trans }}{% endblock title %}
 
 {% block main %}
     <div class="x-margin">
         {% include 'app/common/button/_back.html.twig' with { path_back: path('admin') } only %}
-        <h1 class="mt-4 o-title x-noMargin">{{ 'admin.user.title'|trans }}</h1>
+        <h1 class="mt-4 o-title x-noMargin">{{ 'admin.status.title'|trans }}</h1>
         <ul class="mt-2">
             <li>
-                <a href="{{ path('admin_user_list') }}">Listes</a>
+                <a href="{{ path('admin_status_list') }}">Listes</a>
             </li>
             <li>
-                <a href="{{ path('admin_user_add') }}">Ajouter</a>
+                <a href="{{ path('admin_status_add') }}">Ajouter</a>
             </li>
         </ul>
     </div>

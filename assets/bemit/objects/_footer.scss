@@ -1,19 +1,12 @@
-.o-header {
+.o-footer {
   align-items: center;
   background-color: $blue-sapphire;
   display: flex;
+  justify-content: space-between;
+  margin-top: 55px;
   padding: 21px 89px;
 
   * {
     color: $white;
-  }
-
-  &__logo {
-    margin-right: 13px;
-  }
-
-  &__title {
-    font-size: 2rem;
-    margin-right: 5%;
   }
 }

@@ -19,25 +19,31 @@ final class ProjectType extends AbstractType
     {
         $builder
             ->add('name', options: [
-                'label' => 'project.name'
+                'label' => 'project.name',
+                'required' => true,
             ])
             ->add('description', options: [
-                'label' => 'project.description'
+                'label' => 'project.description',
+                'required' => false,
             ])
             ->add('code', options: [
-                'label' => 'project.code'
+                'label' => 'project.code',
+                'required' => true,
             ])
             ->add('startedAt', options: [
-                'label' => 'project.started_at'
+                'label' => 'project.started_at',
+                'required' => true,
             ])
             ->add('endedAt', options: [
-                'label' => 'project.ended_at'
+                'label' => 'project.ended_at',
+                'required' => true,
             ])
             ->add('status', EntityType::class, [
                 'class' => Status::class,
                 'choice_label' => 'name',
                 'label' => 'project.status',
                 'multiple' => false,
+                'required' => true,
             ])
             ->add('archived', options: [
                 'label' => 'project.archived',
@@ -54,12 +60,14 @@ final class ProjectType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'project.team_project',
                 'multiple' => false,
+                'required' => true,
             ])
             ->add('teamCustomer', EntityType::class, [
                 'class' => Team::class,
                 'choice_label' => 'name',
                 'label' => 'project.team_customer',
                 'multiple' => false,
+                'required' => true,
             ])
             ->add('submit', SubmitType::class)
         ;

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'admin.team.list.title'|trans }}{% endblock title %}
+
+{% block main %}
+    <div class="x-margin">
+        {% include 'app/common/button/_back.html.twig' with {path_back: path('admin_team')} only %}
+        <h1>{{ 'admin.team.list.title'|trans }}</h1>
+        {% if teams is not empty %}
+            {% set block = 'c-team__list' %}
+            <div class="{{ block }}">
+                {% set blockLeading = block ~ '__leading' %}
+                <div class="{{ blockLeading }}">
+                    <span class="{{ blockLeading }}__name">{{ 'team.name'|trans }}</span>
+                    <span class="{{ blockLeading }}__responsible">{{ 'team.responsible'|trans }}</span>
+                    <span class="{{ blockLeading }}__parent">{{ 'team.parent'|trans }}</span>
+                    <span class="{{ blockLeading }}__type">{{ 'team.type'|trans }}</span>
+                    <span class="{{ blockLeading }}__updatedAt">{{ 'team.updated_at'|trans }}</span>
+                </div>
+                {% set blockItem = block ~ '__item' %}
+                {% for team in teams %}
+                    <a class="{{ blockItem }}" href="{{ path('admin_team_edit', { 'uuid': team.uuid }) }}">
+                        <span class="{{ blockItem }}__name">{{ team.name }}</span>
+                        <span class="{{ blockItem }}__responsible">{{ team.responsible.userName }}</span>
+                        <span class="{{ blockItem }}__parent">{{ null != team.parent ? team.parent.name : 'admin.team.list.parent.none'|trans }}</span>
+                        <span class="{{ blockItem }}__type">{{ team.type.label|trans }}</span>
+                        <span class="{{ blockItem }}__updatedAt">{{ team.updatedAt|date('d/m/Y \\à h\\hi') }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <span class="o-btn--noHover">{{ emptyMessage }}</span>
+        {% endif %}
+    </div>
+{% endblock main %}
