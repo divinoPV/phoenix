@@ -356,3 +356,7 @@ p {
 body {
   font-family: initial;
 }
+
+main {
+  min-height: calc(100vh - 268px);
+}

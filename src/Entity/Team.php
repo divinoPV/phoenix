@@ -8,11 +8,15 @@ use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use Knp\DoctrineBehaviors\Contract\Entity\BlameableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Blameable\BlameableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
-class Team
+class Team implements TimestampableInterface, BlameableInterface
 {
-    use Uuidable;
+    use Uuidable, TimestampableTrait, BlameableTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;

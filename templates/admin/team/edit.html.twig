@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'admin.team.edit.title'|trans }} - {{ team.name }}{% endblock title %}
+
+{% block main %}
+    <div class="x-margin">
+        {% include 'app/common/button/_back.html.twig' with {path_back: path('admin_team_list')} only %}
+    </div>
+    <div class="o-container">
+        <h1 class="o-title x-noMargin">{{ 'admin.team.edit.title'|trans }} - {{ team.name }}</h1>
+        {{ form(form) }}
+    </div>
+{% endblock main %}

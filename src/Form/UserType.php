@@ -64,7 +64,7 @@ final class UserType extends AbstractType
             $builder->add('roles', EnumType::class, [
                 'class' => UserRoleEnum::class,
                 'choice_label' => 'label',
-                'label' => 'user.role',
+                'label' => 'user.roles',
                 'multiple' => true,
             ]);
         }

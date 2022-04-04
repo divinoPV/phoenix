@@ -19,11 +19,20 @@
         <main>
             {% block main %}{% endblock main %}
         </main>
-        <footer>
-            {% block footer %}{% endblock footer %}
+        <footer class="o-footer">
+            {% block footer %}
+                {% include 'layouts/_footer.html.twig' %}
+            {% endblock footer %}
         </footer>
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js" integrity="sha256-YicH/8aE660iEnJtgll3vT54dJApy3XkYmqNfGVFEzA=" crossorigin="anonymous"></script>
         {{ encore_entry_script_tags('app') }}
         {% block javascripts %}{% endblock javascripts %}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="o-alert alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
     </body>
 </html>

@@ -6,10 +6,7 @@ use App\Enum\ProbabilityEnum;
 use App\Enum\SeverityEnum;
 use App\Repository\RiskRepository;
 use App\Beable\Entity\Uuidable;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: RiskRepository::class)]
 class Risk

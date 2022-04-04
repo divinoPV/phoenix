@@ -3,7 +3,9 @@
 .c-dashboard__teamProjects,
 .c-dashboard__riskyProjects,
 .c-dashboard__factProjects,
-.c-user
+.c-user,
+.c-team,
+.c-status
 {
   &__list {
     border-radius: 13px;
@@ -20,6 +22,10 @@
       color: $black;
       text-decoration: none;
 
+      & > span, & > strong {
+        overflow: auto;
+      }
+
       &:nth-child(2n) {
         background-color: darken($white, 5%);
       }
@@ -34,7 +40,7 @@
     &__leading, &__item {
       align-items: center;
       display: grid;
-      grid-template-columns: repeat(15, 1fr);
+      grid-template-columns: repeat(15, minmax(0, 1fr));
       grid-gap: 21px;
       padding: 13px 21px;
       text-align: center;
@@ -52,6 +58,18 @@
 
 .c-user__list {
   &__leading, &__item {
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+.c-team__list {
+  &__leading, &__item {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.c-status__list {
+  &__leading, &__item {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

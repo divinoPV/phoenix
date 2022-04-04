@@ -8,13 +8,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use Knp\DoctrineBehaviors\Contract\Entity\BlameableInterface;
 use Knp\DoctrineBehaviors\Contract\Entity\SluggableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Blameable\BlameableTrait;
 use Knp\DoctrineBehaviors\Model\Sluggable\SluggableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
-class Status implements SluggableInterface
+class Status implements SluggableInterface, TimestampableInterface, BlameableInterface
 {
-    use Uuidable, SluggableTrait;
+    use Uuidable, SluggableTrait, TimestampableTrait, BlameableTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;

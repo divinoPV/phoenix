@@ -4,7 +4,7 @@
 
 {% block main %}
     <div class="x-margin">
-        {% include 'app/common/button/_back.html.twig' with {path_back: path('admin_user')} only %}
+        {% include 'app/common/button/_back.html.twig' with {path_back: path('admin_user_list')} only %}
     </div>
     <div class="o-container">
         <h1 class="o-title x-noMargin">{{ 'admin.user.edit.title'|trans }} - {{ user.userName }}</h1>

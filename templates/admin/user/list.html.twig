@@ -4,6 +4,7 @@
 
 {% block main %}
     <div class="x-margin">
+        {% include 'app/common/button/_back.html.twig' with {path_back: path('admin_user')} only %}
         <h1>{{ 'admin.user.list.title'|trans }}</h1>
         {% if users is not empty %}
             {% set block = 'c-user__list' %}
@@ -17,6 +18,7 @@
                     <span class="{{ blockLeading }}__roles">{{ 'user.roles'|trans }}</span>
                     <span class="{{ blockLeading }}__type">{{ 'user.type'|trans }}</span>
                     <span class="{{ blockLeading }}__team">{{ 'user.team'|trans }}</span>
+                    <span class="{{ blockLeading }}__updatedAt">{{ 'user.updated_at'|trans }}</span>
                 </div>
                 {% set blockItem = block ~ '__item' %}
                 {% for user in users %}
@@ -28,6 +30,7 @@
                         <span class="{{ blockItem }}__roles">[{% for role in user.roles %}{{ role }} {% endfor %}]</span>
                         <span class="{{ blockItem }}__type">{{ null != user.type ? user.type.label|trans : 'admin.user.list.type.none'|trans }}</span>
                         <span class="{{ blockItem }}__team">{{ null != user.team ? user.team.name : 'admin.user.list.team.none'|trans  }}</span>
+                        <span class="{{ blockItem }}__updatedAt">{{ user.updatedAt|date('d/m/Y \\à h\\hi') }}</span>
                     </a>
                 {% endfor %}
             </div>

@@ -13,16 +13,16 @@ final class BudgetType extends AbstractType
     {
         $builder
             ->add('original', options: [
-                'label' => 'budget.original'
+                'label' => 'budget.original',
+                'required' => true,
             ])
             ->add('consumed', options: [
-                'label' => 'budget.consumed'
+                'label' => 'budget.consumed',
+                'required' => true,
             ])
             ->add('remaining', options: [
-                'label' => 'budget.remaining'
-            ])
-            ->add('landing', options: [
-                'label' => 'budget.landing'
+                'label' => 'budget.remaining',
+                'required' => true,
             ])
         ;
     }
