@@ -74,7 +74,7 @@ project.list.landing: Atterissage
 project.list.startedAt: Commencé
 project.list.endedAt: Terminé
 project.list.archived: Archivé
-project.list.updatedAt: Mis à jour
+project.list.updatedAt: Mise à jour
 
 ## View - Project - Show
 project.show.code: 'Code :'

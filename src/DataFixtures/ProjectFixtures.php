@@ -21,7 +21,7 @@ final class ProjectFixtures extends BaseFixture implements DependentFixtureInter
                 ->setStatus($this->getReference(StatusFixtures::REFERENCE . \rand(1, StatusFixtures::NUMBER_ELEMENT)))
                 ->setStartedAt($startedAt = new \DateTimeImmutable)
                 ->setEndedAt((new \DateTimeImmutable)->setTimestamp(\mt_rand($startedAt->getTimestamp(), $startedAt->add(\DateInterval::createFromDateString('7 months'))->getTimestamp())))
-                ->setCode($this->faker->word())
+                ->setCode($this->faker->currencyCode)
                 ->setArchived(\rand(0, 1))
                 ->setBudget($this->getReference(BudgetFixtures::REFERENCE . $i))
                 ->setPortfolio($this->getReference(PortfolioFixtures::REFERENCE . \rand(1, PortfolioFixtures::NUMBER_ELEMENT)))

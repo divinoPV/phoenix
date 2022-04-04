@@ -16,7 +16,7 @@ final class StatusFixtures extends BaseFixture implements DependentFixtureInterf
     {
         $this->create(Status::class, self::NUMBER_ELEMENT, function (Status $status, int $i) {
             $status
-                ->setName($this->faker->word)
+                ->setName($this->faker->currencyCode)
                 ->setColor($this->faker->hexColor)
                 ->setPlacement($i)
                 ->setCreatedBy($this->getReference(\rand(0, 1)
